@@ -1,0 +1,283 @@
+<link rel="stylesheet" href="styles.css">
+<div class="headerContainer">
+    <div>
+        <div class="statusContainer">
+            <div class="status">
+                <h1 class="value" id="message"></h1>
+            </div>
+            <div class="balance">
+                <h1 class="value" id="balanceMoney"></h1>
+            </div>
+            <button  class="button">Nastavitve</button>
+        </div>
+    </div>
+</div>
+
+<script type="application/javascript">
+
+    var cards =  [
+        {
+            "value": "A",
+            "suit": "spades"
+        },
+        {
+            "value": "A",
+            "suit": "diamonds"
+        },
+        {
+            "value": "A",
+            "suit": "clubs"
+        },
+        {
+            "value": "A",
+            "suit": "hearts"
+        },
+        {
+            "value": "2",
+            "suit": "spades"
+        },
+        {
+            "value": "2",
+            "suit": "diamonds"
+        },
+        {
+            "value": "2",
+            "suit": "clubs"
+        },
+        {
+            "value": "2",
+            "suit": "hearts"
+        },
+        {
+            "value": "3",
+            "suit": "spades"
+        },
+        {
+            "value": "3",
+            "suit": "diamonds"
+        },
+        {
+            "value": "3",
+            "suit": "clubs"
+        },
+        {
+            "value": "3",
+            "suit": "hearts"
+        },
+        {
+            "value": "4",
+            "suit": "spades"
+        },
+        {
+            "value": "4",
+            "suit": "diamonds"
+        },
+        {
+            "value": "4",
+            "suit": "clubs"
+        },
+        {
+            "value": "4",
+            "suit": "hearts"
+        },
+        {
+            "value": "5",
+            "suit": "spades"
+        },
+        {
+            "value": "5",
+            "suit": "diamonds"
+        },
+        {
+            "value": "5",
+            "suit": "clubs"
+        },
+        {
+            "value": "5",
+            "suit": "hearts"
+        },
+        {
+            "value": "6",
+            "suit": "spades"
+        },
+        {
+            "value": "6",
+            "suit": "diamonds"
+        },
+        {
+            "value": "6",
+            "suit": "clubs"
+        },
+        {
+            "value": "6",
+            "suit": "hearts"
+        },
+        {
+            "value": "7",
+            "suit": "spades"
+        },
+        {
+            "value": "7",
+            "suit": "diamonds"
+        },
+        {
+            "value": "7",
+            "suit": "clubs"
+        },
+        {
+            "value": "7",
+            "suit": "hearts"
+        },
+        {
+            "value": "8",
+            "suit": "spades"
+        },
+        {
+            "value": "8",
+            "suit": "diamonds"
+        },
+        {
+            "value": "8",
+            "suit": "clubs"
+        },
+        {
+            "value": "8",
+            "suit": "hearts"
+        },
+        {
+            "value": "9",
+            "suit": "spades"
+        },
+        {
+            "value": "9",
+            "suit": "diamonds"
+        },
+        {
+            "value": "9",
+            "suit": "clubs"
+        },
+        {
+            "value": "9",
+            "suit": "hearts"
+        },
+        {
+            "value": "10",
+            "suit": "spades"
+        },
+        {
+            "value": "10",
+            "suit": "diamonds"
+        },
+        {
+            "value": "10",
+            "suit": "clubs"
+        },
+        {
+            "value": "10",
+            "suit": "hearts"
+        },
+        {
+            "value": "J",
+            "suit": "spades"
+        },
+        {
+            "value": "J",
+            "suit": "diamonds"
+        },
+        {
+            "value": "J",
+            "suit": "clubs"
+        },
+        {
+            "value": "J",
+            "suit": "hearts"
+        },
+        {
+            "value": "Q",
+            "suit": "spades"
+        },
+        {
+            "value": "Q",
+            "suit": "diamonds"
+        },
+        {
+            "value": "Q",
+            "suit": "clubs"
+        },
+        {
+            "value": "Q",
+            "suit": "hearts"
+        },
+        {
+            "value": "K",
+            "suit": "spades"
+        },
+        {
+            "value": "K",
+            "suit": "diamonds"
+        },
+        {
+            "value": "K",
+            "suit": "clubs"
+        },
+        {
+            "value": "K",
+            "suit": "hearts"
+        }
+    ]
+    const gameStates = {
+        bet : '0',
+        init : '1',
+        userTurn : '2',
+        dealerTurn : '3'
+    }
+
+    const Messages =  {
+            bet : 'Izberite višino stave!',
+            hitStand : 'Izberite akcijo',
+            bust : 'Bust!',
+            userWin : 'Zmagali ste!',
+            dealerWin : 'Dealer zmaga!',
+            tie : 'Izenačeno!'
+    }
+
+    const Deal = {
+        user : '0',
+        dealer : '1',
+        hidden : '2'
+    }
+
+    var deck = [];
+
+    initGame()
+    function  initGame(){
+        var initialBalance = 200;
+        var gameState = gameStates.init;
+        var messageElement = document.getElementById('message');
+        var balanceElement = document.getElementById('balanceMoney');
+        balanceElement.innerHTML = initialBalance;
+        messageElement.innerHTML = Messages.bet;
+        //nrdi initial deck
+        makeShoe(4);
+        //shufflesdeck
+        getDeck()
+
+    }
+
+    function makeShoe(numberDecks = 1){
+         var deck_temp = Array(numberDecks).fill(cards);
+         deck = (deck.concat.apply(deck, deck_temp)).filter(Boolean);
+    }
+
+    function getDeck(){
+        let currentIndex = deck.length,  randomIndex;
+        while (currentIndex != 0) {
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+            [deck[currentIndex], deck[randomIndex]] = [
+                deck[randomIndex], deck[currentIndex]];
+        }
+
+    }
+
+</script>
