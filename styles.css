@@ -1,0 +1,369 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+body {
+    background-color: rgb(0, 78, 0);
+    background-image: url("table_background.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    background-size:100% 100%;
+
+    margin: 0;
+    font-family: 'Lexend Exa', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.card {
+    width: 160px;
+    height: 260px;
+    margin: 10px;
+    padding: 0.25em 0.25em;
+    background: rgb(230, 230, 230);
+    border-radius: 10px;
+    box-shadow: 0px 1px 10px rgb(0, 0, 0);
+    cursor: default;
+}
+
+.card:hover {
+    cursor: pointer;
+    $rt : random(5) - 2.5deg;
+    transform: scale(1.05) rotate($rt);
+}
+
+
+.hiddenCard {
+    width: 160px;
+    height: 260px;
+    margin: 10px;
+    padding: 0.25em 0.25em;
+    background: rgb(230, 230, 230);
+    border-radius: 10px;
+    box-shadow: 0px 1px 10px rgb(0, 0, 0);
+}
+
+.black {
+    color: black;
+}
+
+.red {
+    color: red;
+}
+
+.value {
+    font-size: 400%;
+    margin: 0;
+}
+
+.suit {
+    font-size: 600%;
+    margin: 0;
+    text-align: center;
+}
+
+@media screen and (max-width: 992px) {
+    .card {
+        width: 70px;
+        height: 180px;
+    }
+
+    .hiddenCard {
+        width: 60px;
+        height: 170px;
+    }
+
+    .value {
+        font-size: 300%;
+    }
+
+    .suit {
+        font-size: 500%;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .card {
+        width: 45px;
+        height: 100px;
+        padding: 5px 10px;
+    }
+
+    .hiddenCard {
+        width: 41px;
+        height: 96px;
+        padding: 5px 10px;
+        border: 2px solid white;
+    }
+
+    .value {
+        font-size: 150%;
+    }
+
+    .suit {
+        font-size: 250%;
+    }
+}
+
+
+.controlsContainer {
+    display: flex;
+    justify-content: center;
+    margin: 0.5em 1em 1em 1em;
+    padding-left: 650px;
+    padding-right: 650px;
+}
+
+.betContainer {
+    display: flex;
+    align-items: center;
+    color: white;
+    margin: 0 0.5em;
+    padding: 0 1em;
+    width: 100%;
+    background: black;
+    border: 5px solid white;
+    border-radius: 15px;
+    box-shadow: 0px 1px 10px rgb(0, 0, 0);
+}
+
+.input {
+    width: 1px;
+    flex-grow: 1;
+    margin: 0 0 0 0.5em;
+    font-size: 200%;
+    text-align: right;
+    margin: 5px;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    background: black;
+    color: white;
+}
+
+.inputError {
+    width: 1px;
+    flex-grow: 1;
+    margin: 0 0 0 0.5em;
+    font-size: 200%;
+    text-align: right;
+    margin: 5px;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    background: black;
+    color: red;
+}
+
+.input::-webkit-inner-spin-button,
+.inputError::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.button {
+    color: white;
+    font-weight: bold;
+    margin: 0 0.5em;
+    padding: 1em;
+    width: 40%;
+    background: black;
+    outline: none;
+    border: 5px solid white;
+    border-radius: 15px;
+    box-shadow: 0px 1px 10px rgb(0, 0, 0);
+    text-align: center;
+    cursor: pointer;
+}
+
+@media (hover: hover) {
+    .button:hover {
+        color: black;
+        background: white;
+        border: 5px solid black;
+    }
+}
+
+.button:disabled {
+    color: gray;
+    background: rgb(60, 60, 60);
+    border: 5px solid gray;
+}
+
+@media screen and (max-width: 992px) {
+    .betContainer {
+        width: 50%;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .betContainer {
+        width: 70%;
+    }
+    .betContainer h4 {
+        font-size: 75%;
+    }
+    .betContainer input {
+        font-size: 125%;
+    }
+}
+
+.handContainer {
+    color: white;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin: 0.5em;
+}
+
+.cardContainer {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.title {
+    text-align: center;
+}
+
+@media screen and (max-width: 600px) {
+    .title {
+        font-size: 150%;
+    }
+}
+
+.settingsContainer{
+    margin: 0.5em 1em 1em 1em;
+    left: 50%;
+    border: 3px solid black;
+    background: #dff4df;
+    margin-left: 650px;
+    margin-top: 25px;
+    width: 750px;
+    height: 600px;
+}
+.settingsTitle{
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+    font-family: 'Lexend Exa', sans-serif;
+    height: 50px;
+}
+
+.settingsRow{
+    display: flex;
+    margin-left: 15px;
+    margin-right: 15px;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Lexend Exa', sans-serif;
+    height: 50px;
+    width: auto;
+}
+.settingLabel{
+    margin-left: 15px;
+    font-family: 'Lexend Exa', sans-serif;
+    height: 50px;
+}
+.input{
+    margin-left: 150px;
+    align-items: center;
+    justify-content: flex-end;
+    font-family: 'Lexend Exa', sans-serif;
+    height: 50px;
+
+}
+
+.headerContainer{
+    align-items: center;
+    justify-content: center;
+
+}
+.statusContainer {
+    display: flex;
+    justify-content: center;
+    padding-left: 550px;
+    padding-right: 3%;
+    padding-top: 5%;
+}
+
+.status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0.5em 0.5em 0.5em 1em;
+    padding: 1em;
+    width: 60%;
+    background: black;
+    border: 5px solid white;
+    border-radius: 15px;
+    box-shadow: 0px 1px 10px rgb(0, 0, 0);
+}
+
+.balance {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0.5em 1em 0.5em 0.5em;
+    padding: 1em;
+    width: 30%;
+    background: black;
+    border: 5px solid white;
+    border-radius: 15px;
+    box-shadow: 0px 1px 10px rgb(0, 0, 0);
+}
+
+.settings {
+    display: flex;
+    align-items: right;
+    justify-content: right;
+    margin: 0.5em 1em 0.5em 0.5em;
+    padding: 1em;
+    width: 20%;
+    background: black;
+    border: 5px solid white;
+    border-radius: 15px;
+    box-shadow: 0px 1px 10px rgb(0, 0, 0);
+}
+
+.button {
+    color: white;
+    font-weight: bold;
+    margin: 0 0.5em;
+    padding: 1em;
+    width: 15%;
+    height: 10%;
+    margin-left: 250px;
+    background: black;
+    outline: none;
+    border: 5px solid white;
+    border-radius: 15px;
+    box-shadow: 0px 1px 10px rgb(0, 0, 0);
+    text-align: center;
+    cursor: pointer;
+}
+
+@media (hover: hover) {
+    .button:hover {
+        color: black;
+        background: white;
+        border: 5px solid black;
+    }
+}
+
+.value {
+    color: white;
+    text-align: center;
+}
+
+@media screen and (max-width: 992px) {
+    .value {
+        font-size: 150%;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .value {
+        font-size: 115%;
+    }
+}
