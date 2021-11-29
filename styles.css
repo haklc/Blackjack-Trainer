@@ -28,8 +28,8 @@ body {
 
 .card:hover {
     cursor: pointer;
-    $rt : random(5) - 2.5deg;
-    transform: scale(1.05) rotate($rt);
+    3deg : random(5) - 2.5deg;
+    transform: scale(1.05) rotate(3deg);
 }
 
 
