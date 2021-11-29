@@ -1,17 +1,21 @@
 <link rel="stylesheet" href="styles.css">
+<meta charset="UTF-8">
 <div class="headerContainer">
-    <div>
         <div class="statusContainer">
             <div class="status">
-                <h1 class="value" id="message"></h1>
+                <h2 class="value" id="message"></h2>
             </div>
             <div class="balance">
                 <h1 class="value" id="balanceMoney"></h1>
             </div>
             <button  class="button">Nastavitve</button>
         </div>
-    </div>
 </div>
+<div class="controlsContainer" id="controlsContainer"></div>
+<div class="handContainer" id="dealersHandDiv"></div>
+<div class="handContainer" id="playersHandDiv"></div>
+<div id="gameControlsDiv"></div>
+
 
 <script type="application/javascript">
 
@@ -248,22 +252,37 @@
     }
 
     var deck = [];
+    var playersCards = [];
+    var dealersCards = [];
+    var balance = 200;
+    var gameState;
 
     initGame()
     function  initGame(){
-        var initialBalance = 200;
-        var gameState = gameStates.init;
-        var messageElement = document.getElementById('message');
-        var balanceElement = document.getElementById('balanceMoney');
-        balanceElement.innerHTML = initialBalance;
-        messageElement.innerHTML = Messages.bet;
+        gameState = gameStates.init;
+
         //nrdi initial deck
         makeShoe(4);
+        setBalance(balance)
+        setMessage(Messages.bet)
         //shufflesdeck
-        getDeck();
+
+        getDeck()
+        showGameStartOptions()
+    }
+
 
         //test_getHandValue1();
 
+
+    function setBalance(balance){
+        var balanceElement = document.getElementById('balanceMoney');
+        balanceElement.innerHTML = balance;
+    }
+
+    function setMessage(message){
+        var messageElement = document.getElementById('message');
+        messageElement.innerHTML = message;
     }
 
     function makeShoe(numberDecks = 1){
@@ -281,6 +300,220 @@
         }
 
     }
+
+
+    function showGameStartOptions(){
+        var optionContainer = document.getElementById("controlsContainer");
+        optionContainer.innerHTML = showGameStartControls();
+    }
+    function HideGameStartOptions(){
+        var optionContainer = document.getElementById("controlsContainer");
+        optionContainer.innerHTML = '';
+    }
+
+    function showGameStartControls(){
+        return "<div class=\"betContainer\">\n" +
+            "<h4>Visina stave</h4>\n" +
+            "<input autoFocus type='number' id='BetValue' value=\"\" onChange=\"\" class=\"input\" />\n" +
+            "</div>\n" +
+            "<button onClick='startGame()' class=\"button\">Bet</button>";
+    }
+
+    function startGame(){
+        var betValue = document.getElementById('BetValue').value;
+        if(!betValue){
+            alert("Prosim vpišite višino stave");
+            return false;
+        }
+        if(betValue > balance){
+            alert("Previsoka stava, vpišite manj");
+            return false;
+        }
+        balance = Math.round((balance - betValue) * 100) / 100;
+
+        setBalance(balance);
+        gameState = gameStates.bet;
+        drawInitialCards();
+        HideGameStartOptions();
+        setMessage(Messages.hitStand)
+        showCards()
+        ShowGameControls();
+    }
+
+    function drawInitialCards(){
+        drawCard(Deal.user);
+        drawCard(Deal.hidden);
+        drawCard(Deal.user);
+        drawCard(Deal.dealer);
+    }
+
+    function drawCard(dealType) {
+        if (deck.length > 0) {
+            const randomIndex = Math.floor(Math.random() * deck.length);
+            const card = deck[randomIndex];
+            deck.splice(randomIndex, 1);
+            deck = [...deck];
+            console.log('Ostale karte:', deck.length);
+            dealCard(dealType, card.value, card.suit);
+
+        }
+        else {
+            alert('Kart je zmankalo');
+        }
+    }
+
+    function showCards(){
+        var playersCardsDiv = document.getElementById('playersHandDiv');
+        console.log(playersCardsDiv);
+        var dealersCardsDiv = document.getElementById('dealersHandDiv');
+        playersCardsDiv.innerHTML = showPlayersCards();
+        dealersCardsDiv.innerHTML = showDealersCards();
+    }
+
+    function calculateScore(cards){
+        let total = 0;
+        cards.forEach((card) => {
+            if (card.hidden === false && card.value !== 'A') {
+                switch (card.value) {
+                    case 'K':
+                        total += 10;
+                        break;
+                    case 'Q':
+                        total += 10;
+                        break;
+                    case 'J':
+                        total += 10;
+                        break;
+                    default:
+                        total += Number(card.value);
+                        break;
+                }
+            }
+        });
+        const aces = cards.filter((card) => {
+            return card.value === 'A';
+        });
+        aces.forEach((card) => {
+            if (card.hidden === false) {
+                if ((total + 11) > 21) {
+                    total += 1;
+                }
+                else if ((total + 11) === 21) {
+                    if (aces.length > 1) {
+                        total += 1;
+                    }
+                    else {
+                        total += 11;
+                    }
+                }
+                else {
+                    total += 11;
+                }
+            }
+        });
+        return total;
+    }
+
+    function getCorrectCardFile(card){
+        if(card.value == 'K'){
+            return './cards/king_of_'+card.suit+'2.png';
+        }
+        if(card.value == 'Q'){
+            return './cards/queen_of_'+card.suit+'2.png';
+        }
+        if(card.value == 'J'){
+            return './cards/jack_of_'+card.suit+'2.png';
+        }
+        if(card.value == 'A'){
+            return './cards/ace_of_'+card.suit+'.png';
+        }
+
+        return './cards/'+card.value+'_of_'+card.suit+'.png';
+    }
+
+    function showPlayersCards(){
+        if(!playersCards.length){
+            return false;
+        }
+
+        var cards = '';
+        playersCards.map((card, index) => {
+           if(card.hidden) {
+               cards += '<img class="hiddenCard" src="/cards/card_back.png"  alt="karta"/>';
+           }else{
+               cards += '<div class="CardContainer">\n' +
+                            '<img class="card" src="'+getCorrectCardFile(card)+'"  alt="karta"/>\n' +
+                        '</div>'
+           }
+
+       })
+
+
+        return "<div class='handContainer'>\n" +
+            "      <h1 class='title'>Vaše karte ("+ calculateScore(playersCards)+") </h1>\n" +
+            "      <div class='cardContainer'>\n" +
+               cards+
+            "      </div>\n" +
+            "    </div>"
+    }
+
+    function showDealersCards(){
+        if(!dealersCards.length){
+            return false;
+        }
+
+        var cards = '';
+        dealersCards.map((card, index) => {
+            if(card.hidden) {
+                cards += '<img class="hiddenCard" src="./cards/card_back.png"  alt="karta"/>';
+            }else{
+                cards += '<div class="CardContainer">\n' +
+                    '<img class="card" src="'+getCorrectCardFile(card)+'"  alt="karta"/>\n' +
+                    '</div>'
+            }
+
+        })
+
+
+        return "<div class='handContainer'>\n" +
+            "      <h1 class='title'>Dealerjeve karte ("+ calculateScore(dealersCards)+")</h1>\n" +
+            "      <div class='cardContainer'>\n" +
+            cards+
+            "      </div>\n" +
+            "    </div>"
+    }
+
+    function dealCard(dealType, value, suit){
+        switch (dealType) {
+            case Deal.user:
+                playersCards.push({ 'value': value, 'suit': suit, 'hidden': false });
+                playersCards = [...playersCards];
+                break;
+            case Deal.dealer:
+                dealersCards.push({ 'value': value, 'suit': suit, 'hidden': false });
+                dealersCards = [...dealersCards];
+                break;
+            case Deal.hidden:
+                dealersCards.push({ 'value': value, 'suit': suit, 'hidden': true });
+                dealersCards = [...dealersCards];
+                break;
+            default:
+                break;
+        }
+    }
+
+    function ShowGameControls(){
+        var GameControlsDiv = document.getElementById('gameControlsDiv');
+        GameControlsDiv.innerHTML = "  <div class='controlsContainer'>\n" +
+            "        <button onClick='hitFunction()'  class='buttonGameControls'>Hit</button>\n" +
+            "        <button onClick='standFunction()' class='buttonGameControls'>Stand</button>\n" +
+            "        <button onClick='resetGame()'  class='buttonGameControls'>Reset</button>\n" +
+            "      </div>"
+    }
+
+
+
+
 
     function getHandValue(hand){ //podas array ki ima objekte iz cards in ti vrne vrednost
         let vrednosti = []
