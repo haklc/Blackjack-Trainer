@@ -52,8 +52,10 @@ body {
 }
 
 .value {
-    font-size: 400%;
+    font-size: 300%;
     margin: 0;
+    color: white;
+    text-align: center;
 }
 
 .suit {
@@ -139,7 +141,12 @@ body {
     outline: 0;
     background: black;
     color: white;
+    align-items: center;
+    justify-content: flex-end;
+    font-family: 'Lexend Exa', sans-serif;
+    height: 50px;
 }
+
 
 .inputError {
     width: 1px;
@@ -265,14 +272,7 @@ body {
     font-family: 'Lexend Exa', sans-serif;
     height: 50px;
 }
-.input{
-    margin-left: 150px;
-    align-items: center;
-    justify-content: flex-end;
-    font-family: 'Lexend Exa', sans-serif;
-    height: 50px;
 
-}
 
 .headerContainer{
     align-items: center;
@@ -332,8 +332,24 @@ body {
     margin: 0 0.5em;
     padding: 1em;
     width: 15%;
-    height: 10%;
+    height: 15%;
     margin-left: 250px;
+    background: black;
+    outline: none;
+    border: 5px solid white;
+    border-radius: 15px;
+    box-shadow: 0px 1px 10px rgb(0, 0, 0);
+    text-align: center;
+    cursor: pointer;
+}
+
+.buttonGameControls{
+    color: white;
+    font-weight: bold;
+    margin: 0 0.5em;
+    padding: 1em;
+    width: 15%;
+    height: 15%;
     background: black;
     outline: none;
     border: 5px solid white;
@@ -351,10 +367,7 @@ body {
     }
 }
 
-.value {
-    color: white;
-    text-align: center;
-}
+
 
 @media screen and (max-width: 992px) {
     .value {
