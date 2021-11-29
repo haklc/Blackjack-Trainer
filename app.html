@@ -266,9 +266,14 @@
         setBalance(balance)
         setMessage(Messages.bet)
         //shufflesdeck
+
         getDeck()
         showGameStartOptions()
     }
+
+
+        //test_getHandValue1();
+
 
     function setBalance(balance){
         var balanceElement = document.getElementById('balanceMoney');
@@ -295,6 +300,7 @@
         }
 
     }
+
 
     function showGameStartOptions(){
         var optionContainer = document.getElementById("controlsContainer");
@@ -507,5 +513,44 @@
 
 
 
+
+
+    function getHandValue(hand){ //podas array ki ima objekte iz cards in ti vrne vrednost
+        let vrednosti = []
+        for(let i=0; i < hand.length ; i++){
+            if(hand[i].value == "K" || hand[i].value == "Q" || hand[i].value == "J"){
+                vrednosti.push(10)
+            }
+            else if(hand[i].value == "A"){
+                vrednosti.push(11)
+            }else{
+                vrednosti.push(parseInt(hand[i].value))
+            }
+        }
+        let vsota = vrednosti.reduce(add,0);
+        let I_as;
+        while(vsota>21){ //ce imamo assa (ali vec) pridobimo najvecjo vsoto
+            I_as = vrednosti.indexOf(11);
+            if(I_as == -1){ //ce ni assa
+                return vsota;
+            }
+            else{
+                vrednosti[I_as] = 1;
+                vsota = vrednosti.reduce(add,0);
+            }
+        }
+
+        return vsota;
+    }
+
+    function add(acc, a){ //pomozna za vsoto array
+        return acc + a;
+    }
+
+    function test_getHandValue1(){
+        hand = [cards[0],cards[5],cards[0],cards[0]]
+        console.log(hand);
+        console.log(getHandValue(hand))
+    }
 
 </script>
