@@ -256,7 +256,7 @@
     var dealersCards = [];
     var balance = 200;
     var gameState;
-
+    var betValue = 0;
     initGame()
     function  initGame(){
         gameState = gameStates.init;
@@ -318,7 +318,7 @@
     }
 
     function startGame(){
-        var betValue = document.getElementById('BetValue').value;
+        betValue = document.getElementById('BetValue').value;
         if(!betValue){
             alert("Prosim vpišite višino stave");
             return false;
@@ -362,8 +362,9 @@
 
     function showCards(){
         var playersCardsDiv = document.getElementById('playersHandDiv');
-        console.log(playersCardsDiv);
         var dealersCardsDiv = document.getElementById('dealersHandDiv');
+        playersCardsDiv.innerHTML = "";
+        dealersCardsDiv.innerHTML = "";
         playersCardsDiv.innerHTML = showPlayersCards();
         dealersCardsDiv.innerHTML = showDealersCards();
     }
@@ -466,7 +467,93 @@
             "      </div>"
     }
 
+    function showDisabledControls(){
+        var GameControlsDiv = document.getElementById('gameControlsDiv');
+        GameControlsDiv.innerHTML = "  <div class='controlsContainer'>\n" +
+            "        <button disabled='true' class='buttonGameControls'>Hit</button>\n" +
+            "        <button disabled='true' class='buttonGameControls'>Stand</button>\n" +
+            "        <button onClick='resetGame()' class='buttonGameControls'>Reset</button>\n" +
+            "      </div>"
+    }
 
+    function hitFunction(){
+        drawCard(Deal.user);
+        checkBust();
+        showCards();
+    }
+    function resetGame(){
+        playersCards = [];
+        dealersCards = [];
+        var playersCardsDiv = document.getElementById('playersHandDiv');
+        var dealersCardsDiv = document.getElementById('dealersHandDiv');
+        playersCardsDiv.innerHTML = "";
+        dealersCardsDiv.innerHTML = "";
+        hideGameControls();
+        showGameStartOptions()
+
+    }
+
+    function hideGameControls(){
+        var GameControlsDiv = document.getElementById('gameControlsDiv');
+        GameControlsDiv.innerHTML = '';
+    }
+
+    function standFunction(){
+        showDisabledControls();
+        revealCard()
+        dealersTurn();
+        showCards()
+    }
+
+    function checkBust(){
+        if(getHandValue(playersCards) > 21){
+            showDisabledControls();
+            setMessage(Messages.dealerWin);
+            revealCard()
+            showCards()
+        }
+    }
+
+    function dealersTurn(){
+        if (getHandValue(dealersCards) >= 17) {
+            checkWin();
+        }
+        else {
+            while(getHandValue(dealersCards) < 17) {
+                drawCard(Deal.dealer);
+            }
+            checkWin();
+        }
+    }
+
+    function revealCard(){
+        dealersCards.filter((card) => {
+            if (card.hidden === true) {
+                card.hidden = false;
+            }
+            return card;
+        });
+        dealersCards = [...dealersCards];
+
+    }
+
+    function checkWin(){
+        playerScore = getHandValue(playersCards);
+        dealerScore = getHandValue(dealersCards);
+        if (playerScore > dealerScore || dealerScore > 21) {
+            balance = Math.round((balance + (betValue * 2)) * 100) / 100;
+            setBalance(balance);
+            setMessage(Messages.userWin);
+        }
+        else if (dealerScore > playerScore) {
+            setMessage(Messages.dealerWin);
+        }
+        else {
+            balance = Math.round((balance + (betValue * 1)) * 100) / 100;
+            setBalance(balance);
+            setMessage(Messages.tie);
+        }
+    }
 
 
 
