@@ -21,7 +21,7 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
         //shufflesdeck
 
         getDeck()
-        showGameStartOptions()
+        showGameStartOptions();
     }
 
 
@@ -56,6 +56,7 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
     function showGameStartOptions(){
         var optionContainer = document.getElementById("controlsContainer");
         optionContainer.innerHTML = showGameStartControls();
+        document.getElementById("betBut").addEventListener("click",function(){startGame();});
     }
     function HideGameStartOptions(){
         var optionContainer = document.getElementById("controlsContainer");
@@ -63,11 +64,11 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
     }
 
     function showGameStartControls(){
-        return "<div class=\"betContainer\">\n" +
-            "<h4>Visina stave</h4>\n" +
-            "<input autoFocus type='number' id='BetValue' value= '0'\"\" onChange=\"\" class=\"input\" />\n" +
-            "</div>\n" +
-            "<button onClick='startGame()' class=\"button\">Bet</button>";
+        return  "<div class=\"betContainer\">\n" +
+        "<h4>Visina stave</h4>\n" +
+        "<input autoFocus type='number' id='BetValue' value= '0'\"\" onChange=\"\" class=\"input\" />\n" +
+        "</div>\n" +
+        "<button id='betBut' class=\"button\">Bet</button>";
     }
 
     function startGame(){
@@ -214,10 +215,15 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
     function ShowGameControls(){
         var GameControlsDiv = document.getElementById('gameControlsDiv');
         GameControlsDiv.innerHTML = "  <div class='controlsContainer'>\n" +
-            "        <button onClick='hitFunction()'  class='buttonGameControls'>Hit</button>\n" +
-            "        <button onClick='standFunction()' class='buttonGameControls'>Stand</button>\n" +
-            "        <button onClick='resetGame()'  class='buttonGameControls'>Reset</button>\n" +
+            "        <button id='hitBut' class='buttonGameControls'>Hit</button>\n" +
+            "        <button id='standBut' class='buttonGameControls'>Stand</button>\n" +
+            "        <button id='resetBut' class='buttonGameControls'>Reset</button>\n" +
             "      </div>"
+        
+            document.getElementById("hitBut").addEventListener("click",function(){hitFunction();});
+            document.getElementById("standBut").addEventListener("click",function(){standFunction();});
+            document.getElementById("resetBut").addEventListener("click",function(){resetGame();});
+        
     }
 
     function showDisabledControls(){
@@ -225,8 +231,10 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
         GameControlsDiv.innerHTML = "  <div class='controlsContainer'>\n" +
             "        <button disabled='true' class='buttonGameControls'>Hit</button>\n" +
             "        <button disabled='true' class='buttonGameControls'>Stand</button>\n" +
-            "        <button onClick='resetGame()' class='buttonGameControls'>Reset</button>\n" +
+            "        <button id='resetBut' class='buttonGameControls'>Reset</button>\n" +
             "      </div>"
+        
+        document.getElementById("resetBut").addEventListener("click",function(){resetGame();});
     }
 
     function hitFunction(){
@@ -291,8 +299,8 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
     }
 
     function checkWin(){
-        playerScore = getHandValue(playersCards);
-        dealerScore = getHandValue(dealersCards);
+        let playerScore = getHandValue(playersCards);
+        let dealerScore = getHandValue(dealersCards);
         if (playerScore > dealerScore || dealerScore > 21) {
             balance = Math.round((balance + (betValue * 2)) * 100) / 100;
             setBalance(balance);
