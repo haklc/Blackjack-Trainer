@@ -4,13 +4,15 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
     const gameStates = getPodatkiStates();
     const Messages = getPodatkiMsg();
     const Deal = getPodatkiDeal();
-    var deck = [];
-    var playersCards = [];
-    var dealersCards = [];
-    var balance = 200;
-    var gameState;
-    var betValue = 0;
+    let deck = [];
+    let playersCards = [];
+    let dealersCards = [];
+    let balance = 200;
+    let gameState;
+    let betValue = 0;
     initGame()
+    let images = preloadImg(getPodatkiCards())
+
     function  initGame(){
         gameState = gameStates.init;
 
@@ -24,20 +26,29 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
         showGameStartOptions();
     }
 
+    function preloadImg(args) {
+        let images = new Array()
+        for (let i = 0; i < args.length; i++) {
+            images[i] = new Image()
+            images[i].src = getCorrectCardFile(args[i])
+        }
+        return images;
+    }
+
 
 
     function setBalance(balance){
-        var balanceElement = document.getElementById('balanceMoney');
+        let balanceElement = document.getElementById('balanceMoney');
         balanceElement.innerHTML = balance;
     }
 
     function setMessage(message){
-        var messageElement = document.getElementById('message');
+        let messageElement = document.getElementById('message');
         messageElement.innerHTML = message;
     }
 
     function makeShoe(numberDecks = 1){
-         var deck_temp = Array(numberDecks).fill(cards);
+         let deck_temp = Array(numberDecks).fill(cards);
          deck = (deck.concat.apply(deck, deck_temp)).filter(Boolean);
     }
 
@@ -54,12 +65,12 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
 
 
     function showGameStartOptions(){
-        var optionContainer = document.getElementById("controlsContainer");
+        let optionContainer = document.getElementById("controlsContainer");
         optionContainer.innerHTML = showGameStartControls();
         document.getElementById("betBut").addEventListener("click",function(){startGame();});
     }
     function HideGameStartOptions(){
-        var optionContainer = document.getElementById("controlsContainer");
+        let optionContainer = document.getElementById("controlsContainer");
         optionContainer.innerHTML = '';
     }
 
@@ -117,8 +128,8 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
     }
 
     function showCards(){
-        var playersCardsDiv = document.getElementById('playersHandDiv');
-        var dealersCardsDiv = document.getElementById('dealersHandDiv');
+        let playersCardsDiv = document.getElementById('playersHandDiv');
+        let dealersCardsDiv = document.getElementById('dealersHandDiv');
         playersCardsDiv.innerHTML = "";
         dealersCardsDiv.innerHTML = "";
         playersCardsDiv.innerHTML = showPlayersCards();
@@ -148,7 +159,7 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
             return false;
         }
 
-        var cards = '';
+        let cards = '';
         playersCards.map((card, index) => {
            if(card.hidden) {
                cards += '<img class="hiddenCard" src="/cards/card_back.png"  alt="karta"/>';
@@ -174,7 +185,7 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
             return false;
         }
 
-        var cards = '';
+        let cards = '';
         dealersCards.map((card, index) => {
             if(card.hidden) {
                 cards += '<img class="hiddenCard" src="cards/card_back.png"  alt="karta"/>';
@@ -215,7 +226,7 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
     }
 
     function ShowGameControls(){
-        var GameControlsDiv = document.getElementById('gameControlsDiv');
+        let GameControlsDiv = document.getElementById('gameControlsDiv');
         GameControlsDiv.innerHTML = "  <div class='controlsContainer'>\n" +
             "        <button id='hitBut' class='buttonGameControls'>Hit</button>\n" +
             "        <button id='standBut' class='buttonGameControls'>Stand</button>\n" +
@@ -229,7 +240,7 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
     }
 
     function showDisabledControls(){
-        var GameControlsDiv = document.getElementById('gameControlsDiv');
+        let GameControlsDiv = document.getElementById('gameControlsDiv');
         GameControlsDiv.innerHTML = "  <div class='controlsContainer'>\n" +
             "        <button disabled='true' class='buttonGameControls'>Hit</button>\n" +
             "        <button disabled='true' class='buttonGameControls'>Stand</button>\n" +
@@ -247,8 +258,8 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
     function resetGame(){
         playersCards = [];
         dealersCards = [];
-        var playersCardsDiv = document.getElementById('playersHandDiv');
-        var dealersCardsDiv = document.getElementById('dealersHandDiv');
+        let playersCardsDiv = document.getElementById('playersHandDiv');
+        let dealersCardsDiv = document.getElementById('dealersHandDiv');
         playersCardsDiv.innerHTML = "";
         dealersCardsDiv.innerHTML = "";
         hideGameControls();
@@ -259,7 +270,7 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
     }
 
     function hideGameControls(){
-        var GameControlsDiv = document.getElementById('gameControlsDiv');
+        let GameControlsDiv = document.getElementById('gameControlsDiv');
         GameControlsDiv.innerHTML = '';
     }
 
