@@ -65,10 +65,10 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
 
     function showGameStartControls(){
         return  "<div class=\"betContainer\">\n" +
-        "<h4>Visina stave</h4>\n" +
+        "<h4>Višina stave</h4>\n" +
         "<input autoFocus type='number' id='BetValue' value= '0'\"\" onChange=\"\" class=\"input\" />\n" +
         "</div>\n" +
-        "<button id='betBut' class=\"button\">Bet</button>";
+        "<button id='betBut' class=\"button\">Stavi</button>";
     }
 
     function startGame(){
@@ -85,6 +85,8 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
 
         setBalance(balance);
         gameState = gameStates.bet;
+        hideTutorialLinkBut();
+        hideSettingsBut();
         drawInitialCards();
         HideGameStartOptions();
         setMessage(Messages.hitStand)
@@ -175,7 +177,7 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
         var cards = '';
         dealersCards.map((card, index) => {
             if(card.hidden) {
-                cards += '<img class="hiddenCard" src="./cards/card_back.png"  alt="karta"/>';
+                cards += '<img class="hiddenCard" src="cards/card_back.png"  alt="karta"/>';
             }else{
                 cards += '<div class="CardContainer">\n' +
                     '<img class="card" src="'+getCorrectCardFile(card)+'"  alt="karta"/>\n' +
@@ -186,7 +188,7 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
 
 
         return "<div class='handContainer'>\n" +
-            "      <h1 class='title'>Dealerjeve karte ("+ getHandValue(dealersCards)+")</h1>\n" +
+            "      <h1 class='title'>Karte delivca ("+ getHandValue(dealersCards)+")</h1>\n" +
             "      <div class='cardContainer'>\n" +
             cards+
             "      </div>\n" +
@@ -217,7 +219,7 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
         GameControlsDiv.innerHTML = "  <div class='controlsContainer'>\n" +
             "        <button id='hitBut' class='buttonGameControls'>Hit</button>\n" +
             "        <button id='standBut' class='buttonGameControls'>Stand</button>\n" +
-            "        <button id='resetBut' class='buttonGameControls'>Reset</button>\n" +
+            "        <button id='resetBut' class='buttonGameControls'>Ponastavi</button>\n" +
             "      </div>"
         
             document.getElementById("hitBut").addEventListener("click",function(){hitFunction();});
@@ -231,7 +233,7 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
         GameControlsDiv.innerHTML = "  <div class='controlsContainer'>\n" +
             "        <button disabled='true' class='buttonGameControls'>Hit</button>\n" +
             "        <button disabled='true' class='buttonGameControls'>Stand</button>\n" +
-            "        <button id='resetBut' class='buttonGameControls'>Reset</button>\n" +
+            "        <button id='resetBut' class='buttonGameControls'>Ponastavi</button>\n" +
             "      </div>"
         
         document.getElementById("resetBut").addEventListener("click",function(){resetGame();});
@@ -250,7 +252,9 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
         playersCardsDiv.innerHTML = "";
         dealersCardsDiv.innerHTML = "";
         hideGameControls();
-        showGameStartOptions()
+        showGameStartOptions();
+        showTutorialLinkBut();
+        showSettingsBut();
 
     }
 
@@ -352,3 +356,18 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
         return acc + a;
     }
 
+    function showTutorialLinkBut(){
+        document.getElementById('tutorialLinkBut').style.visibility = "visible"
+    }
+
+    function hideTutorialLinkBut(){
+        document.getElementById('tutorialLinkBut').style.visibility = "hidden";
+    }
+
+    function showSettingsBut(){
+        document.getElementById("settingsBut").style.visibility = "visible";
+    }
+
+    function hideSettingsBut(){
+        document.getElementById("settingsBut").style.visibility = "hidden";
+    }

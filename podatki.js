@@ -217,11 +217,11 @@ const gameStates = {
 
 const Messages =  {
         bet : 'Izberite višino stave!',
-        hitStand : 'Izberite akcijo',
+        hitStand : 'Izberite potezo',
         bust : 'Bust!',
         userWin : 'Zmagali ste!',
-        dealerWin : 'Dealer zmaga!',
-        tie : 'Izenačeno! Dealer zmaga!'
+        dealerWin : 'Delivec zmaga!',
+        tie : 'Izenačeno! Delivec zmaga!'
 }
 
 const Deal = {

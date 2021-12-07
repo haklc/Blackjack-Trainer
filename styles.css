@@ -341,8 +341,51 @@ body {
 .headerContainer{
     align-items: center;
     justify-content: center;
-
 }
+
+#footerContainer{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 100px;
+}
+
+#tutorialContainer{
+    width: 1280px;
+    margin: 2% auto;
+}
+
+#tutorialContainer h1 {
+    display: flex;
+    width: max-content;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    padding: 1em;
+    background: black;
+    /* border: 5px solid white; */
+    border-radius: 15px;
+    box-shadow: 0px 1px 10px rgb(0, 0, 0);
+}
+
+#tutorialContainer div {
+    padding: 1em;
+    margin: 2% auto;
+    text-align: justify;
+    background: black;
+    margin: 0.5em auto 0.5em;
+    /* border: 5px solid white; */
+    border-radius: 15px;
+    box-shadow: 0px 1px 10px rgb(0, 0, 0);
+
+    color: white;
+    width: 1000px;
+}
+
+#tutorialContainer div li{
+    list-style-position: inside;
+}
+
 .statusContainer {
     display: flex;
     justify-content: center;
@@ -355,11 +398,11 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0.5em 0.5em 0.5em 1em;
+    margin: 0 0.5em 0.5em 1em;
     padding: 1em;
     width: 60%;
     background: black;
-    border: 5px solid white;
+    /* border: 5px solid white; */
     border-radius: 15px;
     box-shadow: 0px 1px 10px rgb(0, 0, 0);
 }
@@ -374,11 +417,11 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0.5em 1em 0.5em 0.5em;
+    margin: 0 1em 0.5em 0.5em;
     padding: 1em;
     width: 30%;
     background: black;
-    border: 5px solid white;
+    /* border: 5px solid white; */
     border-radius: 15px;
     box-shadow: 0px 1px 10px rgb(0, 0, 0);
 }
@@ -403,7 +446,6 @@ body {
     padding: 1em;
     width: 15%;
     height: 15%;
-    margin-left: 25%;
     background: black;
     outline: none;
     border: 5px solid white;
@@ -411,6 +453,32 @@ body {
     box-shadow: 0px 1px 10px rgb(0, 0, 0);
     text-align: center;
     cursor: pointer;
+}
+
+#settingsBut {
+    margin-left: 25%;
+}
+
+#betBut{
+    margin-left: 25%;
+}
+
+#tutorialLinkBut{
+    position: absolute;
+    right: 50px;
+    bottom: 0;
+    margin-bottom: 2%; /* kot pri settingsBut margin-top */
+    width: auto;
+    height: auto;
+}
+
+#returnToTrainerBut{
+    position: absolute;
+    left: 50px;
+    top: 0;
+    margin-top: 2%; /* kot pri settingsBut */
+    width: auto;
+    height: auto;
 }
 
 .buttonGameControls{

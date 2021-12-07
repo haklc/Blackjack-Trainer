@@ -2,6 +2,7 @@
 <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
 <meta charset="UTF-8">
 <TITLE>BlackjackTrainer</TITLE>
+
 <div class="headerContainer">
         <div class="statusContainer">
             <div class="status">
@@ -10,13 +11,15 @@
             <div class="balance">
                 <h1 class="value" id="balanceMoney"></h1>
             </div>
-            <button  class="button">Nastavitve</button>
+            <button id="settingsBut" class="button">Nastavitve</button>
         </div>
 </div>
 <div class="controlsContainer" id="controlsContainer"></div>
 <div class="handContainer" id="dealersHandDiv"></div>
 <div class="handContainer" id="playersHandDiv"></div>
 <div id="gameControlsDiv"></div>
-
+<div id="footerContainer">
+    <button id="tutorialLinkBut" class="button" onclick="window.location.href='tutorial.html'">Pomoč</button>
+</div>
 
 <script type="module" src="engine.js"></script>
