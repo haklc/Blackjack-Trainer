@@ -5,32 +5,36 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
     const Messages = getPodatkiMsg();
     const Deal = getPodatkiDeal();
     let deck = [];
+    let playersHands = [];
     let playersCards = [];
+    playersHands.push(playersCards);
+    let handIndex = 0;
+    let doubledHands = [false];
     let dealersCards = [];
     let balance = 200;
     let gameState;
     let betValue = 0;
     initGame()
-    let images = preloadImg(getPodatkiCards())
+    let images = preloadImg(getPodatkiCards());
 
     function  initGame(){
         gameState = gameStates.init;
 
         //nrdi initial deck
         makeShoe(4);
-        setBalance(balance)
-        setMessage(Messages.bet)
+        setBalance(balance);
+        setMessage(Messages.bet);
         //shufflesdeck
 
-        getDeck()
+        getDeck();
         showGameStartOptions();
     }
 
     function preloadImg(args) {
-        let images = new Array()
+        let images = new Array();
         for (let i = 0; i < args.length; i++) {
-            images[i] = new Image()
-            images[i].src = getCorrectCardFile(args[i])
+            images[i] = new Image();
+            images[i].src = getCorrectCardFile(args[i]);
         }
         return images;
     }
@@ -48,8 +52,8 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
     }
 
     function makeShoe(numberDecks = 1){
-         let deck_temp = Array(numberDecks).fill(cards);
-         deck = (deck.concat.apply(deck, deck_temp)).filter(Boolean);
+            let deck_temp = Array(numberDecks).fill(cards);
+            deck = (deck.concat.apply(deck, deck_temp)).filter(Boolean);
     }
 
     function getDeck(){
@@ -100,8 +104,8 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
         hideSettingsBut();
         drawInitialCards();
         HideGameStartOptions();
-        setMessage(Messages.hitStand)
-        showCards()
+        setMessage(Messages.hitStand);
+        showCards();
         ShowGameControls();
     }
 
@@ -154,30 +158,32 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
         return './cards/'+card.value+'_of_'+card.suit+'.png';
     }
 
-    function showPlayersCards(){
-        if(!playersCards.length){
-            return false;
-        }
+    function showPlayersCards() {
+        let hand = '';
+        playersHands.forEach((playerHand) => {
+            let cards = '';
+            if (playerHand.length) {
+                playerHand.map((card, index) => {
+                    if (card.hidden) {
+                        cards += '<img class="hiddenCard" src="/cards/card_back.png"  alt="karta"/>';
+                    } else {
+                        cards += '<div class="CardContainer">\n' +
+                            '<img class="card" src="' + getCorrectCardFile(card) + '"  alt="karta"/>\n' +
+                            '</div>';
+                    }
 
-        let cards = '';
-        playersCards.map((card, index) => {
-           if(card.hidden) {
-               cards += '<img class="hiddenCard" src="/cards/card_back.png"  alt="karta"/>';
-           }else{
-               cards += '<div class="CardContainer">\n' +
-                            '<img class="card" src="'+getCorrectCardFile(card)+'"  alt="karta"/>\n' +
-                        '</div>'
-           }
+                });
 
-       })
+                hand += "<div class='handContainer'>\n" +
+                    "      <h1 class='title'>Vaše karte (" + getHandValue(playerHand) + ") </h1>\n" +
+                    "      <div class='cardContainer'>\n" +
+                    cards +
+                    "      </div>\n" +
+                    "    </div>";
+            }
+        });
 
-
-        return "<div class='handContainer'>\n" +
-            "      <h1 class='title'>Vaše karte ("+ getHandValue(playersCards)+") </h1>\n" +
-            "      <div class='cardContainer'>\n" +
-               cards+
-            "      </div>\n" +
-            "    </div>"
+        return hand;
     }
 
     function showDealersCards(){
@@ -191,26 +197,26 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
                 cards += '<img class="hiddenCard" src="cards/card_back.png"  alt="karta"/>';
             }else{
                 cards += '<div class="CardContainer">\n' +
-                    '<img class="card" src="'+getCorrectCardFile(card)+'"  alt="karta"/>\n' +
-                    '</div>'
+                    '<img class="card" src="' + getCorrectCardFile(card) + '"  alt="karta"/>\n' +
+                    '</div>';
             }
 
-        })
+        });
 
 
         return "<div class='handContainer'>\n" +
-            "      <h1 class='title'>Karte delivca ("+ getHandValue(dealersCards)+")</h1>\n" +
+            "      <h1 class='title'>Karte delivca (" + getHandValue(dealersCards) + ")</h1>\n" +
             "      <div class='cardContainer'>\n" +
-            cards+
+            cards +
             "      </div>\n" +
-            "    </div>"
+            "    </div>";
     }
 
     function dealCard(dealType, value, suit){
         switch (dealType) {
             case Deal.user:
-                playersCards.push({ 'value': value, 'suit': suit, 'hidden': false });
-                playersCards = [...playersCards];
+                playersHands[handIndex].push({ 'value': value, 'suit': suit, 'hidden': false });
+                playersHands[handIndex] = [...playersHands[handIndex]];
                 break;
             case Deal.dealer:
                 dealersCards.push({ 'value': value, 'suit': suit, 'hidden': false });
@@ -229,14 +235,26 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
         let GameControlsDiv = document.getElementById('gameControlsDiv');
         GameControlsDiv.innerHTML = "  <div class='controlsContainer'>\n" +
             "        <button id='hitBut' class='buttonGameControls'>Hit</button>\n" +
+            "        <button id='doubleBut' class='buttonGameControls'>Double</button>\n" +
+            "        <button id='splitBut' class='buttonGameControls'>Split</button>\n" +
             "        <button id='standBut' class='buttonGameControls'>Stand</button>\n" +
             "        <button id='resetBut' class='buttonGameControls'>Ponastavi</button>\n" +
-            "      </div>"
+            "      </div>";
         
             document.getElementById("hitBut").addEventListener("click",function(){hitFunction();});
             document.getElementById("standBut").addEventListener("click",function(){standFunction();});
             document.getElementById("resetBut").addEventListener("click",function(){resetGame();});
-        
+
+        if (betValue > balance)
+            document.getElementById('doubleBut').style.display = "none";
+        else
+            document.getElementById("doubleBut").addEventListener("click", function () { doubleFunction(); });
+
+        if (playersHands[handIndex][0].value != playersHands[handIndex][1].value || betValue > balance)
+            document.getElementById('splitBut').style.display = "none";
+        else
+            document.getElementById("splitBut").addEventListener("click", function () { splitFunction(); });
+
     }
 
     function showDisabledControls(){
@@ -245,19 +263,50 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
             "        <button disabled='true' class='buttonGameControls'>Hit</button>\n" +
             "        <button disabled='true' class='buttonGameControls'>Stand</button>\n" +
             "        <button id='resetBut' class='buttonGameControls'>Ponastavi</button>\n" +
-            "      </div>"
+            "      </div>";
         
         document.getElementById("resetBut").addEventListener("click",function(){resetGame();});
     }
 
-    function hitFunction(){
+    function hitFunction() {
+        document.getElementById('splitBut').style.display = "none";
+        document.getElementById('doubleBut').style.display = "none";
         drawCard(Deal.user);
         checkBust();
         showCards();
     }
-    function resetGame(){
-        playersCards = [];
+    function doubleFunction() {
+        balance = Math.round((balance - betValue) * 100) / 100;
+        setBalance(balance);
+        doubledHands[handIndex] = true;
+        let temp = handIndex;
+        hitFunction();
+        if (getHandValue(playersHands[handIndex]) <= 21 && temp == handIndex)
+            standFunction();
+    }
+    function splitFunction() {
+        document.getElementById('splitBut').style.display = "none";
+        balance = Math.round((balance - betValue) * 100) / 100;
+        setBalance(balance);
+        let splitHand = [];
+        splitHand.push(playersHands[handIndex].pop());
+        playersHands.push(splitHand); 
+        drawCard(Deal.user);
+        let temp = handIndex;
+        handIndex = playersHands.length - 1;
+        drawCard(Deal.user);
+        handIndex = temp;
+        doubledHands.push(false);
+        displayDouble();
+        displaySplit();
+        showCards();
+
+    }
+    function resetGame() {
+        playersHands = [[]];
         dealersCards = [];
+        doubledHands = [false];
+        handIndex = 0;
         let playersCardsDiv = document.getElementById('playersHandDiv');
         let dealersCardsDiv = document.getElementById('dealersHandDiv');
         playersCardsDiv.innerHTML = "";
@@ -274,20 +323,44 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
         GameControlsDiv.innerHTML = '';
     }
 
-    function standFunction(){
+    function standFunction() {
+        if (handIndex < (playersHands.length - 1)) { //ce nismo koncali z igranjem vseh handov, ponovno enable double&split in nadaljuj z igranjem
+            displayDouble();
+            handIndex++;
+            displaySplit();
+            return;
+        }
         showDisabledControls();
-        revealCard()
+        revealCard();
         dealersTurn();
-        showCards()
+        showCards();
     }
 
-    function checkBust(){
-        if(getHandValue(playersCards) > 21){
+    function checkBust() {
+        if (getHandValue(playersHands[handIndex]) > 21) {
+            if (handIndex < (playersHands.length - 1)) {
+                displayDouble();
+                handIndex++;
+                displaySplit();
+                return;
+            }
             showDisabledControls();
             setMessage(Messages.dealerWin);
-            revealCard()
-            showCards()
+            revealCard();
+            if (playersHands.length > 1)
+                dealersTurn();
+            showCards();
         }
+    }
+
+    function displaySplit() {
+        if (playersHands[handIndex][0].value == playersHands[handIndex][1].value && betValue <= balance)
+            document.getElementById('splitBut').style.display = "inline-block";
+    }
+
+    function displayDouble() {
+        if (betValue <= balance)
+            document.getElementById('doubleBut').style.display = "inline-block";
     }
 
     function dealersTurn(){
@@ -313,22 +386,30 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
 
     }
 
-    function checkWin(){
-        let playerScore = getHandValue(playersCards);
-        let dealerScore = getHandValue(dealersCards);
-        if (playerScore > dealerScore || dealerScore > 21) {
-            balance = Math.round((balance + (betValue * 2)) * 100) / 100;
-            setBalance(balance);
-            setMessage(Messages.userWin);
+    function checkWin() {
+        for (let i = 0; i < playersHands.length; i++) {
+            let playerScore = getHandValue(playersHands[i]);
+            let dealerScore = getHandValue(dealersCards);
+            let multiplier = 1;
+            if (doubledHands[i])
+                multiplier = 2;
+            if (playerScore > 21)
+                return;
+            if (playerScore > dealerScore || dealerScore > 21) {
+                balance = Math.round((balance + (betValue * 2 * multiplier)) * 100) / 100;
+                setBalance(balance);
+                setMessage(Messages.userWin);
+            }
+            else if (dealerScore > playerScore) {
+                setMessage(Messages.dealerWin);
+            }
+            else {
+                balance = Math.round((balance + (betValue * 1 * multiplier)) * 100) / 100;
+                setBalance(balance);
+                setMessage(Messages.tie);
+            }
         }
-        else if (dealerScore > playerScore) {
-            setMessage(Messages.dealerWin);
-        }
-        else {
-            balance = Math.round((balance + (betValue * 1)) * 100) / 100;
-            setBalance(balance);
-            setMessage(Messages.tie);
-        }
+    
     }
 
 
@@ -339,12 +420,12 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
             if(hand[i].hidden)
                 continue;
             if(hand[i].value == "K" || hand[i].value == "Q" || hand[i].value == "J"){
-                vrednosti.push(10)
+                vrednosti.push(10);
             }
             else if(hand[i].value == "A"){
-                vrednosti.push(11)
+                vrednosti.push(11);
             }else{
-                vrednosti.push(parseInt(hand[i].value))
+                vrednosti.push(parseInt(hand[i].value));
             }
         }
         let vsota = vrednosti.reduce(add,0);
@@ -368,7 +449,7 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
     }
 
     function showTutorialLinkBut(){
-        document.getElementById('tutorialLinkBut').style.visibility = "visible"
+        document.getElementById('tutorialLinkBut').style.visibility = "visible";
     }
 
     function hideTutorialLinkBut(){

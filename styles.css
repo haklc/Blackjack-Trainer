@@ -273,6 +273,7 @@ body {
     align-items: center;
     flex-direction: column;
     margin: 0.5em;
+    flex:1;
 }
 
 .cardContainer {
@@ -496,6 +497,10 @@ body {
     text-align: center;
     cursor: pointer;
     min-width: fit-content;
+}
+
+#playersHandDiv {
+    flex-direction: initial;
 }
 
 @media (hover: hover) {
