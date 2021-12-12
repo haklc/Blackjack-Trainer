@@ -414,7 +414,7 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
 
 
 
-    function getHandValue(hand){ //podas array ki ima objekte iz cards in ti vrne vrednost
+export    function getHandValue(hand){ //podas array ki ima objekte iz cards in ti vrne vrednost
         let vrednosti = []
         for(let i=0; i < hand.length ; i++){
             if(hand[i].hidden)
