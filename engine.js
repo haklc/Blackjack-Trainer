@@ -161,19 +161,19 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
 
     function getCorrectCardFile(card){
         if(card.value == 'K'){
-            return './cards/king_of_'+card.suit+'2.png';
+            return 'img/cards/king_of_'+card.suit+'2.png';
         }
         if(card.value == 'Q'){
-            return './cards/queen_of_'+card.suit+'2.png';
+            return 'img/cards/queen_of_'+card.suit+'2.png';
         }
         if(card.value == 'J'){
-            return './cards/jack_of_'+card.suit+'2.png';
+            return 'img/cards/jack_of_'+card.suit+'2.png';
         }
         if(card.value == 'A'){
-            return './cards/ace_of_'+card.suit+'.png';
+            return 'img/cards/ace_of_'+card.suit+'.png';
         }
 
-        return './cards/'+card.value+'_of_'+card.suit+'.png';
+        return 'img/cards/'+card.value+'_of_'+card.suit+'.png';
     }
 
     function showPlayersCards() {
@@ -183,7 +183,7 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
             if (playerHand.length) {
                 playerHand.map((card, index) => {
                     if (card.hidden) {
-                        cards += '<img class="hiddenCard" src="/cards/card_back.png"  alt="karta"/>';
+                        cards += '<img class="hiddenCard" src="img/cards/card_back.png"  alt="karta"/>';
                     } else {
                         cards += '<div class="CardContainer">\n' +
                             '<img class="card" src="' + getCorrectCardFile(card) + '"  alt="karta"/>\n' +
@@ -212,7 +212,7 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
         let cards = '';
         dealersCards.map((card, index) => {
             if(card.hidden) {
-                cards += '<img class="hiddenCard" src="cards/card_back.png"  alt="karta"/>';
+                cards += '<img class="hiddenCard" src="img/cards/card_back.png"  alt="karta"/>';
             }else{
                 cards += '<div class="CardContainer">\n' +
                     '<img class="card" src="' + getCorrectCardFile(card) + '"  alt="karta"/>\n' +
@@ -332,7 +332,7 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
         setBalance(balance);
         let splitHand = [];
         splitHand.push(playersHands[handIndex].pop());
-        playersHands.push(splitHand); 
+        playersHands.push(splitHand);
         drawCard(Deal.user);
         let temp = handIndex;
         handIndex = playersHands.length - 1;
@@ -351,13 +351,14 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
         handIndex = 0;
         let playersCardsDiv = document.getElementById('playersHandDiv');
         let dealersCardsDiv = document.getElementById('dealersHandDiv');
+        let messageDiv = document.getElementById("message");
         playersCardsDiv.innerHTML = "";
         dealersCardsDiv.innerHTML = "";
+        messageDiv.innerHTML = "Izberite višino stave!";
         hideGameControls();
         showGameStartOptions();
         showTutorialLinkBut();
         showSettingsBut();
-
     }
 
     function hideGameControls(){
@@ -456,7 +457,7 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
                 setMessage(Messages.tie);
             }
         }
-    
+
     }
 
 

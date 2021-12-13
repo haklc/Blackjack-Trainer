@@ -4,7 +4,7 @@
 }
 body {
     background-color: rgb(0, 78, 0);
-    background-image: url("table_background.jpg");
+    background-image: url("img/table_background.jpg");
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center;
@@ -29,7 +29,7 @@ body {
 
 .card:hover {
     cursor: pointer;
-    3deg : random(5) - 2.5deg;
+/*    3deg : random(5) - 2.5deg;    */
     transform: scale(1.05) rotate(3deg);
 }
 
@@ -194,7 +194,6 @@ body {
     align-items: center;
     justify-content: flex-end;
     font-family: 'Lexend Exa', sans-serif;
-    height: 50px;
     min-width: 80px;
 }
 
@@ -388,7 +387,7 @@ body {
 }
 
 #tutorialContainer{
-    width: 1280px;
+    max-width: 960px;
     margin: 2% auto;
 }
 
@@ -400,34 +399,57 @@ body {
     margin: 0 auto;
     padding: 1em;
     background: black;
-    /* border: 5px solid white; */
     border-radius: 15px;
     box-shadow: 0px 1px 10px rgb(0, 0, 0);
 }
 
 #tutorialContainer div {
     padding: 1em;
-    margin: 2% auto;
+    margin: 0.5em auto 0.5em;
     text-align: justify;
     background: black;
-    margin: 0.5em auto 0.5em;
-    /* border: 5px solid white; */
     border-radius: 15px;
     box-shadow: 0px 1px 10px rgb(0, 0, 0);
-
     color: white;
-    width: 1000px;
 }
 
-#tutorialContainer div li{
+#tutorialContainer div h1 {
+    margin-top: 2em;
+    margin-bottom: 1em;
+    padding: 0;
+}
+
+#tutorialContainer div h2 {
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+}
+
+#tutorialContainer div p {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+#tutorialContainer div li {
     list-style-position: inside;
+}
+
+#tutorialContainer div img {
+    max-width: 60%;
+    display: block;
+    margin: 1em auto 0.5em;
+    border-radius: 5px;
+}
+
+.imgDescription {
+    display: table;
+    margin: 0 auto 1em;
 }
 
 .statusContainer {
     display: flex;
     justify-content: center;
-    padding-left: 27%;
-    padding-right: 3%;
+    padding-left: 30%;
+    padding-right: 30%;
     padding-top: 5%;
 }
 
@@ -465,7 +487,6 @@ body {
 
 .settings {
     display: flex;
-    align-items: right;
     justify-content: right;
     margin: 0.5em 1em 0.5em 0.5em;
     padding: 1em;
@@ -492,19 +513,23 @@ body {
     cursor: pointer;
 }
 
-#settingsBut {
-    margin-left: 25%;
-}
-
 #betBut{
-    margin-left: 25%;
 }
 
 #tutorialLinkBut{
     position: absolute;
+    left: 50px;
+    top: 0;
+    margin-top: 2%;
+    width: auto;
+    height: auto;
+}
+
+#settingsBut {
+    position: absolute;
     right: 50px;
-    bottom: 0;
-    margin-bottom: 2%; /* kot pri settingsBut margin-top */
+    top: 0;
+    margin-top: 2%;
     width: auto;
     height: auto;
 }
