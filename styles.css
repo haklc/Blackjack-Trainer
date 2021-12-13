@@ -344,6 +344,42 @@ body {
     justify-content: center;
 }
 
+.cardCountContainer{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 200px;
+    height: 75px;
+    color: white;
+    font-weight: bold;
+    margin: 0 0.5em;
+    padding: 1em;
+    background: black;
+    outline: none;
+    border: 5px solid white;
+    border-radius: 15px;
+    box-shadow: 0px 1px 10px rgb(0, 0, 0);
+    cursor: pointer;
+    margin: 0.5em 1em 1em 1em;
+}
+
+.cardCount{
+    font-size: 120%;
+
+}
+.runningCount,.trueCount,.numberOfDecks{
+    margin-bottom: 3%;
+}
+
+#runningCountHidden,#trueCountHidden{
+    display: none;
+    float: right;
+}
+#numberOfDecksValue{
+    float: right;
+}
+
+
 #footerContainer{
     position: absolute;
     bottom: 0;
@@ -508,6 +544,12 @@ body {
         color: black;
         background: white;
         border: 5px solid black;
+    }
+    .runningCount:hover #runningCountHidden{
+        display: block;
+    }
+    .trueCount:hover #trueCountHidden{
+        display: block;
     }
 }
 

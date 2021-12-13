@@ -14,6 +14,11 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
     let balance = 200;
     let gameState;
     let betValue = 0;
+    let runningCount = 0;
+    let numberOfDecks = 4;
+    let trueCount = 0;
+    let numberOfShownCards = 0;
+
     initGame()
     let images = preloadImg(getPodatkiCards());
 
@@ -100,13 +105,24 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
 
         setBalance(balance);
         gameState = gameStates.bet;
-        hideTutorialLinkBut();
+        //hideTutorialLinkBut();
+        setCounts();
         hideSettingsBut();
         drawInitialCards();
         HideGameStartOptions();
         setMessage(Messages.hitStand);
         showCards();
         ShowGameControls();
+    }
+
+    function setCounts(){
+        let runningCountEl = document.getElementById('runningCountHidden');
+        let trueCountEl = document.getElementById('trueCountHidden');
+        let numberOfDecksEl = document.getElementById('numberOfDecksValue')
+
+        runningCountEl.innerHTML = runningCount;
+        numberOfDecksEl.innerHTML = numberOfDecks;
+        trueCountEl.innerHTML = trueCount;
     }
 
     function drawInitialCards(){
@@ -124,7 +140,9 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
             deck = [...deck];
             console.log('Ostale karte:', deck.length);
             dealCard(dealType, card.value, card.suit);
-
+            calculateRunningCount(dealType, card);
+            calculateOtherCounts();
+            setCounts();
         }
         else {
             alert('Kart je zmankalo');
@@ -217,10 +235,12 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
             case Deal.user:
                 playersHands[handIndex].push({ 'value': value, 'suit': suit, 'hidden': false });
                 playersHands[handIndex] = [...playersHands[handIndex]];
+                numberOfShownCards++;
                 break;
             case Deal.dealer:
                 dealersCards.push({ 'value': value, 'suit': suit, 'hidden': false });
                 dealersCards = [...dealersCards];
+                numberOfShownCards++;
                 break;
             case Deal.hidden:
                 dealersCards.push({ 'value': value, 'suit': suit, 'hidden': true });
@@ -230,6 +250,28 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
                 break;
         }
     }
+
+    function calculateRunningCount(dealtype,card) {
+        if (dealtype == Deal.hidden) return;
+
+        if (['J', 'Q', 'K', 'A'].includes(card.value) || card.value * 1 == 10) {
+            runningCount--;
+            return;
+        }
+
+        if (parseInt(card.value) >= 2 && parseInt(card.value) <= 6) {
+            runningCount++;
+            return;
+        }
+
+    }
+
+    function calculateOtherCounts(){
+        numberOfDecks = Math.ceil(((4*52) - numberOfShownCards)/52)
+        trueCount =  Math.round(runningCount/numberOfDecks);
+    }
+
+
 
     function ShowGameControls(){
         let GameControlsDiv = document.getElementById('gameControlsDiv');
@@ -378,6 +420,11 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
     function revealCard(){
         dealersCards.filter((card) => {
             if (card.hidden === true) {
+                numberOfShownCards++;
+                calculateRunningCount(Deal.dealer, card);
+                calculateOtherCounts();
+                setCounts();
+
                 card.hidden = false;
             }
             return card;
@@ -448,13 +495,13 @@ export    function getHandValue(hand){ //podas array ki ima objekte iz cards in 
         return acc + a;
     }
 
-    function showTutorialLinkBut(){
+    /*function showTutorialLinkBut(){
         document.getElementById('tutorialLinkBut').style.visibility = "visible";
     }
 
     function hideTutorialLinkBut(){
         document.getElementById('tutorialLinkBut').style.visibility = "hidden";
-    }
+    }*/
 
     function showSettingsBut(){
         document.getElementById("settingsBut").style.visibility = "visible";
