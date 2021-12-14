@@ -227,7 +227,8 @@ const Messages =  {
 const Deal = {
     user : '0',
     dealer : '1',
-    hidden : '2'
+    hidden : '2',
+    bot : '3'
 }
 //DAS is allowed
 const Split = [
