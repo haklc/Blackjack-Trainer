@@ -244,7 +244,7 @@ const Split = [
     [1,1,1,1,1,1,1,1,1,1] //A,A
 
 ]
-//hit = 0, stand = 1, double down = 2
+//hit = 0, stand = 1, double down (hit) = 2
 const Hard = [
     [0,0,0,0,0,0,0,0,0,0], //4
     [0,0,0,0,0,0,0,0,0,0], //5

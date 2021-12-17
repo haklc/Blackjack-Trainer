@@ -15,15 +15,6 @@ export function SplitAnswer(hand,dealerUp){
 }
 
 export function HardAnswer(hand,dealerUp){
-    let vn = 0
-    hand.forEach(function isAs(element){
-        if(element.value == "A"){
-            vn = -1
-        }
-    })
-    if(vn == -1)
-        return -1
-
     let val = getHandValue(hand) - 4 
     let del = getHandValue([dealerUp]) -2 
     return hard[val][del]
@@ -31,6 +22,14 @@ export function HardAnswer(hand,dealerUp){
 }
 
 export function SoftAnswer(hand,dealerUp){
+    
+    let val = getHandValue(hand) - 13 
+    let del = getHandValue([dealerUp]) -2 
+    return soft[val][del]
+
+}
+
+export function PlayAnswer(hand,dealerUp){
     let vn = -1
     hand.forEach(function isAs(element){
         if(element.value == "A"){
@@ -38,10 +37,9 @@ export function SoftAnswer(hand,dealerUp){
         }
     })
     if(vn == -1)
-        return -1
-        
-    let val = getHandValue(hand) - 13 
-    let del = getHandValue([dealerUp]) -2 
-    return soft[val][del]
+        return HardAnswer(hand,dealerUp)
+    else
+        return SoftAnswer(hand,dealerUp)
+
 
 }
