@@ -20,6 +20,7 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
     let trueCount = 0;
     let numberOfShownCards = 0;
     let botsActive = 0;
+    let trueCountThreshold = 3;
 
     initGame()
     let images = preloadImg(getPodatkiCards());
@@ -81,7 +82,9 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
     function showGameStartOptions(){
         let optionContainer = document.getElementById("controlsContainer");
         optionContainer.innerHTML = showGameStartControls();
-        document.getElementById("betBut").addEventListener("click",function(){startGame();});
+        document.getElementById("betHighBut").addEventListener("click",function(){checkHB();});
+        document.getElementById("betLowBut").addEventListener("click",function(){checkLB();});
+        //document.getElementById("betBut").addEventListener("click",function(){startGame();});
         document.getElementById("addBot").addEventListener("click",function(){addBot();});
     }
     function HideGameStartOptions(){
@@ -90,16 +93,32 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
     }
 
     function showGameStartControls(){
-        return  "<div class=\"betContainer\">\n" +
-        "<h4>Višina stave</h4>\n" +
-        "<input autoFocus type='number' id='BetValue' value= '0'\"\" onChange=\"\" class=\"input\" />\n" +
-        "</div>\n" +
-        "<button id='betBut' class=\"button\">Stavi</button>" +
+        //"<div class=\"betContainer\">\n" +
+        //"<h4>Višina stave</h4>\n" +
+        //"<input autoFocus type='number' id='BetValue' value= '0'\"\" onChange=\"\" class=\"input\" />\n" +
+        //"</div>\n" +
+        return "<button id='betHighBut' class=\"button\">Bet High</button>" +
+        "<button id='betLowBut' class=\"button\">Bet Low</button>" +
+        //"<button id='betBut' class=\"button\">Stavi</button>" +
         "<button id='addBot' class=\"button\">Dodaj igralca</button>";
     }
 
+    function checkHB(){
+        if(trueCount < trueCountThreshold){
+            alert("Narobe, morali bi staviti nizko!");
+        }
+        startGame();
+    }
+
+    function checkLB(){
+        if(trueCount >= trueCountThreshold){
+            alert("Narobe, morali bi staviti visoko!");
+        }
+        startGame();
+    }
+
     function startGame(){
-        betValue = document.getElementById('BetValue').value;
+        /*betValue = document.getElementById('BetValue').value;
         if(!betValue){
             alert("Prosim vpišite višino stave");
             return false;
@@ -108,7 +127,7 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
             alert("Previsoka stava, vpišite manj");
             return false;
         }
-        balance = Math.round((balance - betValue) * 100) / 100;
+        balance = Math.round((balance - betValue) * 100) / 100;*/
 
         setBalance(balance);
         gameState = gameStates.bet;
