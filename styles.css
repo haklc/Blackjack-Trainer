@@ -517,6 +517,14 @@ body {
 #betBut{
 }
 
+#betLowBut{
+    width: 50%;
+}
+
+#betHighBut{
+    width: 50%;
+}
+
 #tutorialLinkBut{
     position: absolute;
     left: 50px;
