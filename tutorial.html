@@ -73,23 +73,65 @@
         <p>Najboljšo potezo izberemo na podlagi kart, ki nam jih kaže delivec.</p>
         <h2>4. Delivec izbere potezo</h2>
         <p>
+            Delivec vedno igra po pravilih casinoja. Hit-a dokler ima manj ali enako 16. Standa na 17 ali več. Če ima "soft 17" (AS + 5) lahko hit-a, če je v pravilih casinoja.
+        </p>
+        <h1>Kaj so hi/low stave?</h1>
+        <p>
+            High/low oziroma visoke/nizke stave je način izbire stave. In sicer je naša izbira odvisna od štetja kart. Če je varijanca v našo prid izberemo visoko stavo, če ni izberemo nizko. Nizka stava je ponavadi nekje blizu minimalne, visoka pa odvisna od nas. Obe vrednosti moramo malo spreminjati, saj če smo očitni z igranjem na ta način nas casino hitreje opazi kot števca kart.
 
         </p>
+        <h1>Kako šteti karte?</h1>
+        <h2>1.Dodeli vrednost vsaki karti</h2>
         <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lacus sed turpis tincidunt id aliquet. A erat nam at lectus. Auctor urna nunc id cursus metus aliquam eleifend mi. Libero enim sed faucibus turpis in eu mi. Tempus iaculis urna id volutpat lacus laoreet non curabitur gravida. Adipiscing at in tellus integer feugiat. Tincidunt ornare massa eget egestas purus viverra. Quis varius quam quisque id diam vel quam elementum pulvinar. Morbi non arcu risus quis varius quam quisque id diam. Faucibus nisl tincidunt eget nullam non nisi est sit. Viverra nibh cras pulvinar mattis nunc sed blandit libero volutpat. Turpis egestas integer eget aliquet. Facilisi etiam dignissim diam quis enim lobortis scelerisque fermentum. Sed euismod nisi porta lorem mollis aliquam ut porttitor. Donec ac odio tempor orci. Morbi tristique senectus et netus et malesuada fames ac. Pellentesque sit amet porttitor eget dolor. Eget duis at tellus at urna condimentum. Vitae et leo duis ut diam quam.
+            Uporabimo metodo Hi-Lo, ki dodeli vrednosti:
+            <ul style="padding-left: 10%">
+                <li>2-6 = +1</li>
+                <li>7-9 = 0</li>
+                <li>10-As = -1</li>
+            </ul>
+        </p>
+        <h2>2.Tekoče štetje</h2>
+         
+        <p>
+            Ko štejemo karte upoštevamo vsako karto, ki pride na mizo. S tem dobimo našo tekoč števec.
+        </p>
+        </br>
+        <p>
+            <b>Primer 1:</b> Tekoč števec za to rundo je 0.
+            <img src="img/tutorial/how-to-count-cards-example-1.webp"/>
+        </p>
+    </br>
+    <p>
+        <b>Primer 2:</b> Tekočo števec za to rundo je +1.
+        <img src="img/tutorial/how-to-count-cards-example-2.webp"/>
+    </p>
+    </br>
+    <p>
+        <b>Primer 3:</b> Tekočo števec za to rundo je +1.
+        <img src="img/tutorial/how-to-count-cards-example-3.webp"/>
+    </p>
+        
+        <br>
+        <h2>3.Pravi števec</h2>
+        <p>
+            Da bi cazinoji preprečili štetje kart so začeli uporabljati tako imenovane čevlje. Čevelj je skupek več kompletov kart, iz katerega se delijo karte. Da obhodimo to prepreko pretvorimo naš tekoči števec v pravi stevec..
         </p>
         <p>
-            Sem integer vitae justo eget magna fermentum iaculis. Nulla facilisi etiam dignissim diam. Risus in hendrerit gravida rutrum quisque non tellus orci. Ullamcorper malesuada proin libero nunc consequat interdum varius sit. Non curabitur gravida arcu ac tortor dignissim convallis aenean et. Vitae proin sagittis nisl rhoncus mattis rhoncus urna neque. Et ligula ullamcorper malesuada proin libero nunc. Integer eget aliquet nibh praesent tristique magna. Eleifend mi in nulla posuere sollicitudin aliquam ultrices. Nulla at volutpat diam ut venenatis tellus in. Amet porttitor eget dolor morbi non arcu. Porttitor eget dolor morbi non arcu risus quis varius. Nulla aliquet enim tortor at auctor urna nunc. Purus semper eget duis at. Ornare quam viverra orci sagittis eu volutpat odio.
+            Če imamo tekoč števec +5 pri 6-ih kompletih kart v čevlju je čisto drugačna zgodba kot imeti +5 tekoči števec pri 1 kompletu kart. V prvem primeru imamo manj kot 1 višjo karto na kup kart. Medtem ko pri 1 kupu to pomeni da imamo 5 več visokih kart kot nizkih.
         </p>
         <p>
-            Enim sed faucibus turpis in eu mi. Et tortor consequat id porta nibh venenatis. Vel facilisis volutpat est velit egestas dui id ornare. Elit scelerisque mauris pellentesque pulvinar. Vel risus commodo viverra maecenas accumsan lacus. Fermentum et sollicitudin ac orci. Ac odio tempor orci dapibus ultrices. Risus pretium quam vulputate dignissim suspendisse in est ante. Malesuada fames ac turpis egestas maecenas. Eget sit amet tellus cras adipiscing enim eu turpis. Pretium lectus quam id leo in vitae turpis massa. Ut lectus arcu bibendum at varius vel.
+            Upoštevati število kart v čevlju nam da pravi count, katerega uporabimo za spreminjanje stave. izračunamo ga po naslednji formuli:
+            <img src="img/tutorial/true-count.webp"/>
+
+            <b>Primer 1:</b> Če je naš tekoč števec 10 in imamo še 5 kupov kart v čevlju, je naš pravi števec 10 % 5 = 2 </br>
+            <b>Primer 2:</b> Če je naš tekoč števec -7 in imamo še 2 kupa kart v čevlju, je naš pravi števec -7 % 2 = -3
+
         </p>
+        <h2>4.Varijeranje stave</h2>
         <p>
-            At volutpat diam ut venenatis tellus in. Non arcu risus quis varius quam quisque id. Neque viverra justo nec ultrices. Cursus sit amet dictum sit amet justo. Dolor magna eget est lorem ipsum dolor. Bibendum neque egestas congue quisque egestas diam. Pretium fusce id velit ut tortor pretium viverra. Orci sagittis eu volutpat odio facilisis. Volutpat odio facilisis mauris sit amet massa vitae tortor. Ullamcorper velit sed ullamcorper morbi tincidunt ornare massa. Consectetur adipiscing elit ut aliquam purus sit amet luctus. Ullamcorper morbi tincidunt ornare massa eget egestas. Sodales ut eu sem integer vitae. Faucibus et molestie ac feugiat sed lectus vestibulum. Neque convallis a cras semper auctor neque vitae tempus. Fermentum posuere urna nec tincidunt praesent semper feugiat nibh. Risus feugiat in ante metus dictum at.
+            Z uporabo pravega števca vemo kdaj imamo prednost pred delivcem in posledično kdaj se splača staviti več in kdaj manj.
         </p>
-        <p>
-            Egestas integer eget aliquet nibh praesent tristique magna sit amet. Ultricies mi quis hendrerit dolor magna. Velit scelerisque in dictum non consectetur a erat. Cursus mattis molestie a iaculis. Tellus in metus vulputate eu scelerisque felis. Ornare massa eget egestas purus viverra accumsan in nisl. Maecenas pharetra convallis posuere morbi leo. At augue eget arcu dictum varius duis at consectetur lorem. Pretium vulputate sapien nec sagittis. Velit ut tortor pretium viverra suspendisse potenti nullam ac. Justo donec enim diam vulputate ut. Massa tincidunt nunc pulvinar sapien.
-        </p>
+        
         <br>
         <a href="https://www.blackjackapprenticeship.com/how-to-play-blackjack/" target="_blank">Več informacij o Blackjacku</a>
     </div>
