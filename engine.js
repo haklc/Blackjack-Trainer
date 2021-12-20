@@ -1,4 +1,4 @@
-import { PlayAnswer, PlayPhrases, SplitAnswer, SplitPhrase } from "./basicStrategy.js";
+﻿import { PlayAnswer, PlayPhrases, SplitAnswer, SplitPhrase } from "./basicStrategy.js";
 import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from "./podatki.js"
 
     let cards = getPodatkiCards();
@@ -11,7 +11,7 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
     playersHands.push([]);
     let handIndex = 0;
     let botIndex = 0;
-    let doubledHands = [false];
+    //let doubledHands = [false];
     let dealersCards = [];
     let gameState;
     
@@ -197,9 +197,9 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
         let dealersCardsDiv = document.getElementById('dealersHandDiv');
         playersCardsDiv.innerHTML = "";
         dealersCardsDiv.innerHTML = "";
-        playersCardsDiv.innerHTML = showBotsCards(0);
+        playersCardsDiv.innerHTML = showBotsCards(1);
         playersCardsDiv.innerHTML += showPlayersCards();
-        playersCardsDiv.innerHTML += showBotsCards(1);
+        playersCardsDiv.innerHTML += showBotsCards(0);
         dealersCardsDiv.innerHTML = showDealersCards();
     }
 
@@ -385,21 +385,25 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
         document.getElementById("doubleBut").addEventListener("click", function () { doubleFunction(); });
 
         if (playersHands[handIndex][0].value != playersHands[handIndex][1].value)
-            document.getElementById('splitBut').style.display = "none";
+            disableButton('splitBut');
         else
             document.getElementById("splitBut").addEventListener("click", function () { splitFunction(); });
 
     }
 
     function showDisabledControls(){
-        let GameControlsDiv = document.getElementById('gameControlsDiv');
-        GameControlsDiv.innerHTML = "  <div class='controlsContainer'>\n" +
-            "        <button disabled='true' class='buttonGameControls'>Hit</button>\n" +
-            "        <button disabled='true' class='buttonGameControls'>Stand</button>\n" +
-            "        <button id='resetBut' class='buttonGameControls'>Ponastavi</button>\n" +
-            "      </div>";
+        disableButton('hitBut');
+        disableButton('doubleBut');
+        disableButton('splitBut');
+        disableButton('standBut');
+        //let GameControlsDiv = document.getElementById('gameControlsDiv');
+        //GameControlsDiv.innerHTML = "  <div class='controlsContainer'>\n" +
+        //    "        <button disabled='true' class='buttonGameControls'>Hit</button>\n" +
+        //    "        <button disabled='true' class='buttonGameControls'>Stand</button>\n" +
+        //    "        <button id='resetBut' class='buttonGameControls'>Ponastavi</button>\n" +
+        //    "      </div>";
         
-        document.getElementById("resetBut").addEventListener("click",function(){resetGame();});
+        //document.getElementById("resetBut").addEventListener("click",function(){resetGame();});
     }
     function CheckIfCorrectMove(move,turn){
         let spl_answer = SplitAnswer(playersHands[handIndex],dealersCards);
@@ -449,8 +453,8 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
             CheckIfCorrectMove(0,move_hand);
             move_hand++;
         }
-        document.getElementById('splitBut').style.display = "none";
-        document.getElementById('doubleBut').style.display = "none";
+        disableButton('splitBut');
+        disableButton('doubleBut');
         drawCard(Deal.user);
         checkBust();
         showCards();
@@ -479,18 +483,19 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
         CheckIfCorrectMove(2,move_hand);
         move_hand++;
 
-        doubledHands[handIndex] = true;
+        //doubledHands[handIndex] = true;
         let temp = handIndex;
         hitFunction(1);
         console.log("Hand index: "+handIndex)
         console.log(playersHands)
-        if (getHandValue(playersHands[handIndex]) <= 21 && temp == handIndex)
+        if (getHandValue(playersHands[temp]) <= 21 && temp == handIndex)
             standFunction(1);
     }
+
     function splitFunction() {
         CheckIfCorrectMove(4,move_hand);
         move_hand++;
-        document.getElementById('splitBut').style.display = "none";
+        disableButton('splitBut');
         
         let splitHand = [];
         splitHand.push(playersHands[handIndex].pop());
@@ -500,17 +505,17 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
         handIndex = playersHands.length - 1;
         drawCard(Deal.user);
         handIndex = temp;
-        doubledHands.push(false);
+        //doubledHands.push(false);
         displayDouble();
         displaySplit();
         showCards();
-
     }
+
     function resetGame() {
         playersHands = [[]];
         botsHands = [];
         dealersCards = [];
-        doubledHands = [false];
+        //doubledHands = [false];
         move_hand = 0
         handIndex = 0;
         botsActive = 0;
@@ -555,12 +560,25 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
     }
 
     function displaySplit() {
-        if (playersHands[handIndex][0].value == playersHands[handIndex][1].value)
-            document.getElementById('splitBut').style.display = "inline-block";
+        if (playersHands[handIndex][0].value == playersHands[handIndex][1].value) {
+            let btn = document.getElementById('splitBut');
+            btn.style.display = "inline-block";
+            btn.disabled = false;
+            btn.style.opacity = "1";
+        }
     }
 
     function displayDouble() {
-        document.getElementById('doubleBut').style.display = "inline-block";
+        let btn = document.getElementById('doubleBut');
+        btn.style.display = "inline-block";
+        btn.disabled = false;
+        btn.style.opacity = "1";
+    }
+
+    function disableButton(button) {
+        let btn = document.getElementById(button);
+        btn.disabled = true;
+        btn.style.opacity = "0.7";
     }
 
     function dealersTurn() {
@@ -598,9 +616,9 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
         for (let i = 0; i < playersHands.length; i++) {
             let playerScore = getHandValue(playersHands[i]);
             let dealerScore = getHandValue(dealersCards);
-            let multiplier = 1;
-            if (doubledHands[i])
-                multiplier = 2;
+            //let multiplier = 1;
+            //if (doubledHands[i])
+            //    multiplier = 2;
             if (playersHands.length > 1)
                 addNum = "[" + (i + 1) + "] ";
             if (playerScore > 21) {
