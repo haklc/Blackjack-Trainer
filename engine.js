@@ -1,3 +1,4 @@
+import { PlayAnswer, PlayPhrases, SplitAnswer, SplitPhrase } from "./basicStrategy.js";
 import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from "./podatki.js"
 
     let cards = getPodatkiCards();
@@ -12,9 +13,8 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
     let botIndex = 0;
     let doubledHands = [false];
     let dealersCards = [];
-    let balance = 200;
     let gameState;
-    let betValue = 0;
+    
     let runningCount = 0;
     let numberOfDecks = 4;
     let trueCount = 0;
@@ -22,15 +22,17 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
     let botsActive = 0;
     let trueCountThreshold = 3;
 
-    initGame()
+    let move_hand=0;
+
     let images = preloadImg(getPodatkiCards());
+    initGame()
+    
 
     function  initGame(){
         gameState = gameStates.init;
 
         //nrdi initial deck
         makeShoe(4);
-        setBalance(balance);
         setMessage(Messages.bet);
         //shufflesdeck
 
@@ -49,10 +51,6 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
 
 
 
-    function setBalance(balance){
-        let balanceElement = document.getElementById('balanceMoney');
-        balanceElement.innerHTML = balance;
-    }
 
     function setMessage(message, reset = true, addNum = ""){
         let messageElement = document.getElementById('message');
@@ -118,18 +116,8 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
     }
 
     function startGame(){
-        /*betValue = document.getElementById('BetValue').value;
-        if(!betValue){
-            alert("Prosim vpišite višino stave");
-            return false;
-        }
-        if(betValue > balance){
-            alert("Previsoka stava, vpišite manj");
-            return false;
-        }
-        balance = Math.round((balance - betValue) * 100) / 100;*/
 
-        setBalance(balance);
+        
         gameState = gameStates.bet;
         //hideTutorialLinkBut();
         setCounts();
@@ -214,6 +202,7 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
         playersCardsDiv.innerHTML += showBotsCards(1);
         dealersCardsDiv.innerHTML = showDealersCards();
     }
+
 
 
     function getCorrectCardFile(card){
@@ -388,16 +377,14 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
             "        <button id='resetBut' class='buttonGameControls'>Ponastavi</button>\n" +
             "      </div>";
         
-            document.getElementById("hitBut").addEventListener("click",function(){hitFunction();});
-            document.getElementById("standBut").addEventListener("click",function(){standFunction();});
+            document.getElementById("hitBut").addEventListener("click",function(){hitFunction(0);});
+            document.getElementById("standBut").addEventListener("click",function(){standFunction(0);});
             document.getElementById("resetBut").addEventListener("click",function(){resetGame();});
 
-        if (betValue > balance)
-            document.getElementById('doubleBut').style.display = "none";
-        else
-            document.getElementById("doubleBut").addEventListener("click", function () { doubleFunction(); });
+       
+        document.getElementById("doubleBut").addEventListener("click", function () { doubleFunction(); });
 
-        if (playersHands[handIndex][0].value != playersHands[handIndex][1].value || betValue > balance)
+        if (playersHands[handIndex][0].value != playersHands[handIndex][1].value)
             document.getElementById('splitBut').style.display = "none";
         else
             document.getElementById("splitBut").addEventListener("click", function () { splitFunction(); });
@@ -414,27 +401,97 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
         
         document.getElementById("resetBut").addEventListener("click",function(){resetGame();});
     }
+    function CheckIfCorrectMove(move,turn){
+        let spl_answer = SplitAnswer(playersHands[handIndex],dealersCards);
+        let dd_answer = PlayAnswer(playersHands[handIndex],dealersCards);
+        let ply_answer = PlayAnswer(playersHands[handIndex],dealersCards); //od 0,1,2,3
+        //move; 0:hit 1:stand, 2:double
+        if (turn == 0){ //check ce moramo spliata
+            
+            if(spl_answer == 1 && move != 4){ //ce bi mogli split in nismo
+                //console.log("Mogu bi split "+SplitPhrase(playersHands[handIndex]))
+                alert(SplitPhrase(playersHands[handIndex]))
+            }
 
-    function hitFunction() {
+            if((dd_answer == 2 || dd_answer == 3) && move != 2){ //ce nismo dd ko bi mogli
+                //console.log("1: "+PlayPhrases(playersHands[handIndex]))
+                alert(PlayPhrases(playersHands[handIndex]))
+            }
+
+            if(spl_answer == 0 && move == 4){ //ce smo split in ne bi smeli
+               // console.log("Ne bi smel split: "+SplitPhrase(playersHands[handIndex]))
+                alert(SplitPhrase(playersHands[handIndex]))
+                return
+            }
+            if((dd_answer == 2 || dd_answer == 3) && move == 2){ //ce smo dd ko smo mogli
+                return
+            }
+            if(ply_answer == move){
+                return
+            }else{
+                //console.log("2: "+PlayPhrases(playersHands[handIndex]))
+                alert(PlayPhrases(playersHands[handIndex]))
+            }
+            
+        }else{
+            if(ply_answer % 2 == move){
+                return;
+            }else{
+                //console.log("3: "+PlayPhrases(playersHands[handIndex]))
+                alert(PlayPhrases(playersHands[handIndex]))
+            }}
+    }
+
+
+    function hitFunction(izDD) { //izDD pove ce smo prsi iz doubledown (za potrebo preverjanja)
+        
+        if(izDD == 0){ //ce nismo iz DD prsli, imamo navaden hit -> preverimo pravilnost
+            CheckIfCorrectMove(0,move_hand);
+            move_hand++;
+        }
         document.getElementById('splitBut').style.display = "none";
         document.getElementById('doubleBut').style.display = "none";
         drawCard(Deal.user);
         checkBust();
         showCards();
     }
+
+    function standFunction(izDD) {
+        if(izDD==0){
+            CheckIfCorrectMove(1,move_hand);
+        }
+        move_hand=0;
+        if (handIndex < (playersHands.length - 1)) { //ce nismo koncali z igranjem vseh handov, ponovno enable double&split in nadaljuj z igranjem
+            displayDouble();
+            handIndex++;
+            displaySplit();
+            showCards();
+            return;
+        }
+        showDisabledControls();
+        revealCard();
+        dealersTurn();
+        handIndex++;
+        showCards();
+    }
+
     function doubleFunction() {
-        balance = Math.round((balance - betValue) * 100) / 100;
-        setBalance(balance);
+        CheckIfCorrectMove(2,move_hand);
+        move_hand++;
+
         doubledHands[handIndex] = true;
         let temp = handIndex;
-        hitFunction();
+        hitFunction(1);
+        console.log("Hand index: "+handIndex)
+        console.log(playersHands)
         if (getHandValue(playersHands[handIndex]) <= 21 && temp == handIndex)
-            standFunction();
+            standFunction(1);
     }
     function splitFunction() {
+        CheckIfCorrectMove(4,move_hand);
+        move_hand++;
         document.getElementById('splitBut').style.display = "none";
-        balance = Math.round((balance - betValue) * 100) / 100;
-        setBalance(balance);
+        
         let splitHand = [];
         splitHand.push(playersHands[handIndex].pop());
         playersHands.push(splitHand);
@@ -454,6 +511,7 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
         botsHands = [];
         dealersCards = [];
         doubledHands = [false];
+        move_hand = 0
         handIndex = 0;
         botsActive = 0;
         botIndex = 0;
@@ -474,26 +532,14 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
         GameControlsDiv.innerHTML = '';
     }
 
-    function standFunction() {
-        if (handIndex < (playersHands.length - 1)) { //ce nismo koncali z igranjem vseh handov, ponovno enable double&split in nadaljuj z igranjem
-            displayDouble();
-            handIndex++;
-            displaySplit();
-            showCards();
-            return;
-        }
-        showDisabledControls();
-        revealCard();
-        dealersTurn();
-        handIndex++;
-        showCards();
-    }
+   
 
     function checkBust() {
         if (getHandValue(playersHands[handIndex]) > 21) {
             if (handIndex < (playersHands.length - 1)) {
                 displayDouble();
                 handIndex++;
+                move_hand = 0;
                 displaySplit();
                 showCards();
                 return;
@@ -509,13 +555,12 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
     }
 
     function displaySplit() {
-        if (playersHands[handIndex][0].value == playersHands[handIndex][1].value && betValue <= balance)
+        if (playersHands[handIndex][0].value == playersHands[handIndex][1].value)
             document.getElementById('splitBut').style.display = "inline-block";
     }
 
     function displayDouble() {
-        if (betValue <= balance)
-            document.getElementById('doubleBut').style.display = "inline-block";
+        document.getElementById('doubleBut').style.display = "inline-block";
     }
 
     function dealersTurn() {
@@ -564,16 +609,12 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
                 continue;
 			}
             if (playerScore > dealerScore || dealerScore > 21) {
-                balance = Math.round((balance + (betValue * 2 * multiplier)) * 100) / 100;
-                setBalance(balance);
                 setMessage(Messages.userWin, msgReset, addNum);
             }
             else if (dealerScore > playerScore) {
                 setMessage(Messages.dealerWin, msgReset, addNum);
             }
             else {
-                balance = Math.round((balance + (betValue * 1 * multiplier)) * 100) / 100;
-                setBalance(balance);
                 setMessage(Messages.tie, msgReset, addNum);
             }
             msgReset = false;
@@ -584,6 +625,7 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
 
 
 export    function getHandValue(hand){ //podas array ki ima objekte iz cards in ti vrne vrednost
+        //console.log(hand)
         let vrednosti = []
         for(let i=0; i < hand.length ; i++){
             if(hand[i].hidden)
@@ -613,17 +655,17 @@ export    function getHandValue(hand){ //podas array ki ima objekte iz cards in 
         return vsota;
     }
 
-    function add(acc, a){ //pomozna za vsoto array
+export function add(acc, a){ //pomozna za vsoto array
         return acc + a;
     }
 
-    /*function showTutorialLinkBut(){
+    function showTutorialLinkBut(){
         document.getElementById('tutorialLinkBut').style.visibility = "visible";
     }
 
     function hideTutorialLinkBut(){
         document.getElementById('tutorialLinkBut').style.visibility = "hidden";
-    }*/
+    }
 
     function showSettingsBut(){
         document.getElementById("settingsBut").style.visibility = "visible";
