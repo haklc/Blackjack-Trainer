@@ -423,6 +423,10 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
                 alert(SplitPhrase(playersHands[handIndex]))
                 return
             }
+            if(spl_answer == 1 && move == 4){ //ce smo split in smo morali
+                return
+            }
+
             if((dd_answer == 2 || dd_answer == 3) && move == 2){ //ce smo dd ko smo mogli
                 return
             }
