@@ -4,8 +4,8 @@
 <title>BlackjackTrainer - Pomoč</title>
 
 <div class="headerContainer"></div>
-<div id="tutorialContainer">
-    <button class="button" id="returnToTrainerBut" onclick="window.location.href='index.html'">Nazaj na trainer</button>
+<div class="textContainer">
+    <button class="button returnToTrainerBut" onclick="window.location.href='index.html'">Nazaj na trainer</button>
     <h1 class="value">Pomoč pri igranju Blackjacka</h1>
     <div>
         <p style="text-align: center">
@@ -39,7 +39,7 @@
         <h1>Kako poteka igra Blackjacka?</h1>
         <h2>1. Igralec vplača začetno stavo</h2>
         <p>
-            Začetna stava glede na pravila igralnice navadno ne sme biti manjša od <span class="usdSign">$</span>5<span class="eurSign">&nbsp€.</span>
+            Začetna stava je lahko visoka ali nizka, glej <i><a href="#hiLowBetLink">Kaj so hi/low stave</a></i>.
         </p>
         <h2>2. Delivec razdeli karte</h2>
         <p>
@@ -75,7 +75,7 @@
         <p>
             Delivec vedno igra po pravilih casinoja. Hit-a dokler ima manj ali enako 16. Standa na 17 ali več. Če ima "soft 17" (AS + 5) lahko hit-a, če je v pravilih casinoja.
         </p>
-        <h1>Kaj so hi/low stave?</h1>
+        <h1 id="hiLowBetLink">Kaj so hi/low stave?</h1>
         <p>
             High/low oziroma visoke/nizke stave je način izbire stave. In sicer je naša izbira odvisna od štetja kart. Če je varijanca v našo prid izberemo visoko stavo, če ni izberemo nizko. Nizka stava je ponavadi nekje blizu minimalne, visoka pa odvisna od nas. Obe vrednosti moramo malo spreminjati, saj če smo očitni z igranjem na ta način nas casino hitreje opazi kot števca kart.
 
@@ -136,3 +136,4 @@
         <a href="https://www.blackjackapprenticeship.com/how-to-play-blackjack/" target="_blank">Več informacij o Blackjacku</a>
     </div>
 </div>
+<script type="text/javascript" src="settings.js"></script>

@@ -1,0 +1,45 @@
+<link rel="stylesheet" href="styles.css">
+<link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico" />
+<meta charset="UTF-8">
+<title>BlackjackTrainer – Nastavitve</title>
+
+<script type="text/javascript" src="settings.js"></script>
+
+<div class="headerContainer"></div>
+<div id="settingsContainer" class="textContainer">
+    <button class="button returnToTrainerBut" onclick="window.location.href='index.html'">Nazaj na trainer</button>
+    <h1 class="value">Nastavitve</h1>
+    <div>
+        <h3>Način igre</h3>
+        <label id="gameModeSettingLabel" for="gameModeSetting">Omogoči soigralce</label>
+        <input id="gameModeSetting" type="checkbox" onchange="updateNumberOfBots()">
+        <br id="numberOfBotsBreak">
+        <label id="numberOfBotsSettingLabel" for="numberOfBotsSetting">Število soigralcev</label>
+        <input id="numberOfBotsSetting" type="number" min="1" max="2" onchange="updateNumberOfBots()">
+    </div>
+    <div>
+        <h3>Decki v shoe</h3>
+        <label id="numberOfDecksSettingLabel" for="numberOfDecksSetting">Število deckov v shoe</label>
+        <input id="numberOfDecksSetting" type="number" min="1" max="3" onchange="updateNumberOfDecks()">
+    </div>
+    <div>
+        <h3>Pravi števec</h3>
+        <label id="trueCountSettingLabel" for="trueCountSetting">Breakpoint true counta za switch iz low bet na high</label>
+        <input id="trueCountSetting" type="number" min="0" max="9" onchange="updateTrueCountThreshold()">
+    </div>
+    <button id="defaultSettingsBut" class="button" onclick="resetSettings();window.location.reload()">Ponastavi</button>
+</div>
+
+<script type="text/javascript">
+    // je tukaj, ker mi ni uspelo z onLoad
+    document.getElementById("numberOfDecksSetting").value = getCookie("numberOfDecks")
+    const numberOfBots = getCookie("numberOfBots")
+    if (numberOfBots === "0") {
+        updateNumberOfBots()
+    } else {
+        document.getElementById("gameModeSetting").checked = true
+        document.getElementById("numberOfBotsSetting").value = numberOfBots
+        updateNumberOfBots()
+    }
+    document.getElementById("trueCountSetting").value = getCookie("trueCountThreshold")
+</script>

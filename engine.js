@@ -16,11 +16,11 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
     let gameState;
     
     let runningCount = 0;
-    let numberOfDecks = 4;
+    let numberOfDecks = getCookie("numberOfDecks");
     let trueCount = 0;
     let numberOfShownCards = 0;
-    let botsActive = 0;
-    let trueCountThreshold = 3;
+    let botsActive = getCookie("numberOfBots");
+    let trueCountThreshold = getCookie("trueCountThreshold");
 
     let move_hand=0;
 
@@ -32,10 +32,11 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
         gameState = gameStates.init;
 
         //nrdi initial deck
-        makeShoe(4);
+        makeShoe(numberOfDecks);
         setMessage(Messages.bet);
         //shufflesdeck
 
+        setBots(botsActive);
         getDeck();
         showGameStartOptions();
     }
@@ -60,7 +61,7 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
             messageElement.innerHTML += ("\n" + addNum + message);
     }
 
-    function makeShoe(numberDecks = 1){
+    function makeShoe(numberDecks){
             let deck_temp = Array(numberDecks).fill(cards);
             deck = (deck.concat.apply(deck, deck_temp)).filter(Boolean);
     }
@@ -83,7 +84,7 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
         document.getElementById("betHighBut").addEventListener("click",function(){checkHB();});
         document.getElementById("betLowBut").addEventListener("click",function(){checkLB();});
         //document.getElementById("betBut").addEventListener("click",function(){startGame();});
-        document.getElementById("addBot").addEventListener("click",function(){addBot();});
+        //document.getElementById("addBot").addEventListener("click",function(){addBot();});
     }
     function HideGameStartOptions(){
         let optionContainer = document.getElementById("controlsContainer");
@@ -96,9 +97,9 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
         //"<input autoFocus type='number' id='BetValue' value= '0'\"\" onChange=\"\" class=\"input\" />\n" +
         //"</div>\n" +
         return "<button id='betHighBut' class=\"button\">Bet High</button>" +
-        "<button id='betLowBut' class=\"button\">Bet Low</button>" +
+        "<button id='betLowBut' class=\"button\">Bet Low</button>"
         //"<button id='betBut' class=\"button\">Stavi</button>" +
-        "<button id='addBot' class=\"button\">Dodaj igralca</button>";
+        //"<button id='addBot' class=\"button\">Dodaj igralca</button>";
     }
 
     function checkHB(){
@@ -312,11 +313,12 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
             "    </div>";
     }
 
-    function addBot() {
-        if (botsActive == 2)
-            return;
-        botsHands.push([]);
-        botsActive++;
+    function setBots(newBotsActive) {
+        botsHands = []
+        for (let i = 0; i < newBotsActive; i++) {
+            botsHands.push([])
+        }
+        botsActive = newBotsActive
     }
 
     function dealCard(dealType, value, suit){
@@ -376,12 +378,12 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
             "        <button id='standBut' class='buttonGameControls'>Stand</button>\n" +
             "        <button id='resetBut' class='buttonGameControls'>Ponastavi</button>\n" +
             "      </div>";
-        
+
             document.getElementById("hitBut").addEventListener("click",function(){hitFunction(0);});
             document.getElementById("standBut").addEventListener("click",function(){standFunction(0);});
             document.getElementById("resetBut").addEventListener("click",function(){resetGame();});
 
-       
+
         document.getElementById("doubleBut").addEventListener("click", function () { doubleFunction(); });
 
         if (playersHands[handIndex][0].value != playersHands[handIndex][1].value)
@@ -402,7 +404,7 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
         //    "        <button disabled='true' class='buttonGameControls'>Stand</button>\n" +
         //    "        <button id='resetBut' class='buttonGameControls'>Ponastavi</button>\n" +
         //    "      </div>";
-        
+
         //document.getElementById("resetBut").addEventListener("click",function(){resetGame();});
     }
     function CheckIfCorrectMove(move,turn){
@@ -411,7 +413,7 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
         let ply_answer = PlayAnswer(playersHands[handIndex],dealersCards); //od 0,1,2,3
         //move; 0:hit 1:stand, 2:double
         if (turn == 0){ //check ce moramo spliata
-            
+
             if(spl_answer == 1 && move != 4){ //ce bi mogli split in nismo
                 //console.log("Mogu bi split "+SplitPhrase(playersHands[handIndex]))
                 alert(SplitPhrase(playersHands[handIndex]))
@@ -440,7 +442,7 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
                 //console.log("2: "+PlayPhrases(playersHands[handIndex]))
                 alert(PlayPhrases(playersHands[handIndex]))
             }
-            
+
         }else{
             if(ply_answer % 2 == move){
                 return;
@@ -452,7 +454,7 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
 
 
     function hitFunction(izDD) { //izDD pove ce smo prsi iz doubledown (za potrebo preverjanja)
-        
+
         if(izDD == 0){ //ce nismo iz DD prsli, imamo navaden hit -> preverimo pravilnost
             CheckIfCorrectMove(0,move_hand);
             move_hand++;
@@ -500,7 +502,7 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
         CheckIfCorrectMove(4,move_hand);
         move_hand++;
         disableButton('splitBut');
-        
+
         let splitHand = [];
         splitHand.push(playersHands[handIndex].pop());
         playersHands.push(splitHand);
@@ -522,7 +524,6 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
         //doubledHands = [false];
         move_hand = 0
         handIndex = 0;
-        botsActive = 0;
         botIndex = 0;
         let playersCardsDiv = document.getElementById('playersHandDiv');
         let dealersCardsDiv = document.getElementById('dealersHandDiv');
@@ -541,7 +542,7 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
         GameControlsDiv.innerHTML = '';
     }
 
-   
+
 
     function checkBust() {
         if (getHandValue(playersHands[handIndex]) > 21) {
