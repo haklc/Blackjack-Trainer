@@ -520,6 +520,7 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
     function resetGame() {
         playersHands = [[]];
         botsHands = [];
+        setBots(botsActive);
         dealersCards = [];
         //doubledHands = [false];
         move_hand = 0
