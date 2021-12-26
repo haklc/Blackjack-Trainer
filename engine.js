@@ -1,4 +1,4 @@
-﻿import { PlayAnswer, PlayPhrases, SplitAnswer, SplitPhrase } from "./basicStrategy.js";
+import { PlayAnswer, PlayPhrases, SplitAnswer, SplitPhrase } from "./basicStrategy.js";
 import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from "./podatki.js"
 
     let cards = getPodatkiCards();
@@ -16,11 +16,13 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
     let gameState;
     
     let runningCount = 0;
-    let numberOfDecks = getCookie("numberOfDecks");
+    let numberOfDecks = parseInt(getCookie("numberOfDecks"));
+    let displayNumberOfDecks = numberOfDecks;
+
     let trueCount = 0;
     let numberOfShownCards = 0;
-    let botsActive = getCookie("numberOfBots");
-    let trueCountThreshold = getCookie("trueCountThreshold");
+    let botsActive = parseInt(getCookie("numberOfBots"));
+    let trueCountThreshold = parseInt(getCookie("trueCountThreshold"));
 
     let move_hand=0;
 
@@ -49,9 +51,6 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
         }
         return images;
     }
-
-
-
 
     function setMessage(message, reset = true, addNum = ""){
         let messageElement = document.getElementById('message');
@@ -136,7 +135,9 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
         let numberOfDecksEl = document.getElementById('numberOfDecksValue')
 
         runningCountEl.innerHTML = runningCount;
-        numberOfDecksEl.innerHTML = numberOfDecks;
+        numberOfDecksEl.innerHTML = displayNumberOfDecks;
+        console.log(displayNumberOfDecks);
+        console.log(typeof(displayNumberOfDecks));
         trueCountEl.innerHTML = trueCount;
     }
 
@@ -177,20 +178,22 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
     }
 
     function drawCard(dealType) {
-        if (deck.length > 0) {
-            const randomIndex = Math.floor(Math.random() * deck.length);
-            const card = deck[randomIndex];
-            deck.splice(randomIndex, 1);
-            deck = [...deck];
-            console.log('Ostale karte:', deck.length);
-            dealCard(dealType, card.value, card.suit);
-            calculateRunningCount(dealType, card);
-            calculateOtherCounts();
-            setCounts();
+        if(deck.length < 1){
+            runningCount = 0;
+            deck = [];
+            numberOfShownCards = 0
+            makeShoe(numberOfDecks);
+            getDeck(); 
         }
-        else {
-            alert('Kart je zmankalo');
-        }
+        const randomIndex = Math.floor(Math.random() * deck.length);
+        const card = deck[randomIndex];
+        deck.splice(randomIndex, 1);
+        deck = [...deck];
+        console.log('Ostale karte:', deck.length);
+        dealCard(dealType, card.value, card.suit);
+        calculateRunningCount(dealType, card);
+        calculateOtherCounts();
+        setCounts();
     }
 
     function showCards(){
@@ -363,8 +366,10 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
     }
 
     function calculateOtherCounts(){
-        numberOfDecks = Math.ceil(((4*52) - numberOfShownCards)/52)
-        trueCount =  Math.round(runningCount/numberOfDecks);
+        displayNumberOfDecks = Math.ceil(((numberOfDecks*52) - numberOfShownCards)/52)
+        console.log("Prikazane karte:",numberOfShownCards);
+        //numberOfDecks = Math.ceil(((4*52) - numberOfShownCards)/52)
+        trueCount =  Math.round(runningCount/displayNumberOfDecks);
     }
 
 
