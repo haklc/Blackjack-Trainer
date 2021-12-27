@@ -14,7 +14,6 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
     //let doubledHands = [false];
     let dealersCards = [];
     let gameState;
-    
     let runningCount = 0;
     let numberOfDecks = parseInt(getCookie("numberOfDecks"));
     let displayNumberOfDecks = numberOfDecks;
@@ -415,7 +414,7 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
             "        <button id='doubleBut' class='buttonGameControls'>Double</button>\n" +
             "        <button id='splitBut' class='buttonGameControls'>Split</button>\n" +
             "        <button id='standBut' class='buttonGameControls'>Stand</button>\n" +
-            "        <button id='resetBut' class='buttonGameControls'>Ponastavi</button>\n" +
+            "        <button id='resetBut' disabled style='opacity: 0.7' class='buttonGameControls'>Naslednja runda</button>\n" +
             "      </div>";
 
             document.getElementById("hitBut").addEventListener("click",function(){hitFunction(0);});
@@ -638,6 +637,7 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
                 dealersTurn();
             handIndex++;
             showCards();
+            enableButton('resetBut')
         }
     }
 
@@ -661,6 +661,12 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
         let btn = document.getElementById(button);
         btn.disabled = true;
         btn.style.opacity = "0.7";
+    }
+
+    function enableButton(button){
+        let btn = document.getElementById(button);
+        btn.disabled = false;
+        btn.style.opacity = "1";
     }
 
     function dealersTurn() {
@@ -695,6 +701,7 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
     function checkWin() {
         let msgReset = true;
         let addNum = "";
+
         for (let i = 0; i < playersHands.length; i++) {
             let playerScore = getHandValue(playersHands[i]);
             let dealerScore = getHandValue(dealersCards);
@@ -719,6 +726,7 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
             }
             msgReset = false;
         }
+        enableButton('resetBut')
 
     }
 
