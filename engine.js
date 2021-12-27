@@ -28,6 +28,8 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
     let total_moves = 0;
     let accuracy;
 
+    let errorMsg = "";
+
     let move_hand=0;
 
     let images = preloadImg(getPodatkiCards());
@@ -45,6 +47,8 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
         setBots(botsActive);
         getDeck();
         showGameStartOptions();
+
+        deleteLogs();
     }
 
     function preloadImg(args) {
@@ -107,9 +111,12 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
 
     function checkHB(){
         if(trueCount < trueCountThreshold){
-            alert("Narobe, morali bi staviti nizko!");
+            errorMsg = "Wrong, you should have betted low";
+            writeMessageIntoLog(errorMsg);
         }
         else {
+            errorMsg = "Correct move.";
+            writeMessageIntoLog(errorMsg);
             correct_moves++;
         }
         total_moves++;
@@ -119,14 +126,27 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
 
     function checkLB(){
         if(trueCount >= trueCountThreshold){
-            alert("Narobe, morali bi staviti visoko!");
+            errorMsg = "Wrong, you should have betted high";
+            writeMessageIntoLog(errorMsg);
         }
         else{
+            errorMsg = "Correct move.";
+            writeMessageIntoLog(errorMsg);
             correct_moves++;
         }
         total_moves++;
         updateAccuracy(correct_moves,total_moves);
         startGame();
+    }
+
+    function writeMessageIntoLog(msg){
+        let txtArea = document.getElementById("tArea");
+        txtArea.value += msg + '\r\n'; 
+        document.getElementById("tArea").scrollTop = document.getElementById("tArea").scrollHeight
+    }
+
+    function deleteLogs(){
+        document.getElementById("tArea").value = "";
     }
 
     function startGame(){
@@ -444,43 +464,62 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
         if (turn == 0){ //check ce moramo spliata
             if(spl_answer == 1 && move != 4){ //ce bi mogli split in nismo
                 //console.log("Mogu bi split "+SplitPhrase(playersHands[handIndex]))
-                alert(SplitPhrase(playersHands[handIndex]))
+                //alert(SplitPhrase(playersHands[handIndex]))
+                errorMsg = SplitPhrase(playersHands[handIndex]);
+                writeMessageIntoLog(errorMsg);
             }
 
             if((dd_answer == 2 || dd_answer == 3) && move != 2){ //ce nismo dd ko bi mogli
                 //console.log("1: "+PlayPhrases(playersHands[handIndex]))
-                alert(PlayPhrases(playersHands[handIndex]))
+                //alert(PlayPhrases(playersHands[handIndex]))
+                //DOBIMO STRING al je string
+                errorMsg = PlayPhrases(playersHands[handIndex]);
+                writeMessageIntoLog(errorMsg);
             }
 
             if(spl_answer == 0 && move == 4){ //ce smo split in ne bi smeli
                // console.log("Ne bi smel split: "+SplitPhrase(playersHands[handIndex]))
-                alert(SplitPhrase(playersHands[handIndex]))
+                //alert(SplitPhrase(playersHands[handIndex]))
+                errorMsg = SplitPhrase(playersHands[handIndex]);
+                writeMessageIntoLog(errorMsg);
                 return
             }
             if(spl_answer == 1 && move == 4){ //ce smo split in smo morali
                 correct_moves++;
+                errorMsg = "Correct move.";
+                writeMessageIntoLog(errorMsg);
                 return
             }
 
             if((dd_answer == 2 || dd_answer == 3) && move == 2){ //ce smo dd ko smo mogli
                 correct_moves++;
+                errorMsg = "Correct move.";
+                writeMessageIntoLog(errorMsg);
                 return
             }
             if(ply_answer == move){
                 correct_moves++;
+                errorMsg = "Correct move.";
+                writeMessageIntoLog(errorMsg);
                 return
             }else{
                 //console.log("2: "+PlayPhrases(playersHands[handIndex]))
-                alert(PlayPhrases(playersHands[handIndex]))
+                //alert(PlayPhrases(playersHands[handIndex]))
+                errorMsg = PlayPhrases(playersHands[handIndex]);
+                writeMessageIntoLog(errorMsg);
             }
 
         }else{
             if(ply_answer % 2 == move){
                 correct_moves++;
+                errorMsg = "Correct move.";
+                writeMessageIntoLog(errorMsg);
                 return;
             }else{
                 //console.log("3: "+PlayPhrases(playersHands[handIndex]))
-                alert(PlayPhrases(playersHands[handIndex]))
+                //alert(PlayPhrases(playersHands[handIndex]))
+                errorMsg = PlayPhrases(playersHands[handIndex]);
+                writeMessageIntoLog(errorMsg);
             }
         }
     }
