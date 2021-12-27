@@ -415,7 +415,7 @@ body {
     bottom: 0;
     right: 0;
     width: 200px;
-    height: 75px;
+    height: 105px;
     color: white;
     font-weight: bold;
     margin: 0 0.5em;
@@ -433,7 +433,7 @@ body {
     font-size: 120%;
 
 }
-.runningCount,.trueCount,.numberOfDecks{
+.runningCount,.trueCount,.numberOfDecks,.accuracyDisplay{
     margin-bottom: 3%;
 }
 
