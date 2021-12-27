@@ -24,6 +24,10 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
     let botsActive = parseInt(getCookie("numberOfBots"));
     let trueCountThreshold = parseInt(getCookie("trueCountThreshold"));
 
+    let correct_moves = 0;
+    let total_moves = 0;
+    let accuracy;
+
     let move_hand=0;
 
     let images = preloadImg(getPodatkiCards());
@@ -105,6 +109,11 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
         if(trueCount < trueCountThreshold){
             alert("Narobe, morali bi staviti nizko!");
         }
+        else {
+            correct_moves++;
+        }
+        total_moves++;
+        updateAccuracy(correct_moves,total_moves);
         startGame();
     }
 
@@ -112,6 +121,11 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
         if(trueCount >= trueCountThreshold){
             alert("Narobe, morali bi staviti visoko!");
         }
+        else{
+            correct_moves++;
+        }
+        total_moves++;
+        updateAccuracy(correct_moves,total_moves);
         startGame();
     }
 
@@ -136,8 +150,8 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
 
         runningCountEl.innerHTML = runningCount;
         numberOfDecksEl.innerHTML = displayNumberOfDecks;
-        console.log(displayNumberOfDecks);
-        console.log(typeof(displayNumberOfDecks));
+        //console.log(displayNumberOfDecks);
+        //console.log(typeof(displayNumberOfDecks));
         trueCountEl.innerHTML = trueCount;
     }
 
@@ -367,7 +381,7 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
 
     function calculateOtherCounts(){
         displayNumberOfDecks = Math.ceil(((numberOfDecks*52) - numberOfShownCards)/52)
-        console.log("Prikazane karte:",numberOfShownCards);
+        //console.log("Prikazane karte:",numberOfShownCards);
         //numberOfDecks = Math.ceil(((4*52) - numberOfShownCards)/52)
         trueCount =  Math.round(runningCount/displayNumberOfDecks);
     }
@@ -412,13 +426,22 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
 
         //document.getElementById("resetBut").addEventListener("click",function(){resetGame();});
     }
+
+    function updateAccuracy(correctM, allM){
+        console.log("Pravilne poteze:",correct_moves,"vse poteze:",total_moves);
+        accuracy = (100 * correctM) / allM;
+        accuracy = accuracy.toFixed(2);
+        let accuracyDisplay1 = document.getElementById('moveAccuracy');
+        accuracyDisplay1.innerHTML = accuracy + "%";
+    }
+
     function CheckIfCorrectMove(move,turn){
         let spl_answer = SplitAnswer(playersHands[handIndex],dealersCards);
         let dd_answer = PlayAnswer(playersHands[handIndex],dealersCards);
         let ply_answer = PlayAnswer(playersHands[handIndex],dealersCards); //od 0,1,2,3
         //move; 0:hit 1:stand, 2:double
+        total_moves++;
         if (turn == 0){ //check ce moramo spliata
-
             if(spl_answer == 1 && move != 4){ //ce bi mogli split in nismo
                 //console.log("Mogu bi split "+SplitPhrase(playersHands[handIndex]))
                 alert(SplitPhrase(playersHands[handIndex]))
@@ -435,13 +458,16 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
                 return
             }
             if(spl_answer == 1 && move == 4){ //ce smo split in smo morali
+                correct_moves++;
                 return
             }
 
             if((dd_answer == 2 || dd_answer == 3) && move == 2){ //ce smo dd ko smo mogli
+                correct_moves++;
                 return
             }
             if(ply_answer == move){
+                correct_moves++;
                 return
             }else{
                 //console.log("2: "+PlayPhrases(playersHands[handIndex]))
@@ -450,11 +476,13 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
 
         }else{
             if(ply_answer % 2 == move){
+                correct_moves++;
                 return;
             }else{
                 //console.log("3: "+PlayPhrases(playersHands[handIndex]))
                 alert(PlayPhrases(playersHands[handIndex]))
-            }}
+            }
+        }
     }
 
 
@@ -469,6 +497,7 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
         drawCard(Deal.user);
         checkBust();
         showCards();
+        updateAccuracy(correct_moves,total_moves);
     }
 
     function standFunction(izDD) {
@@ -488,6 +517,7 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
         dealersTurn();
         handIndex++;
         showCards();
+        updateAccuracy(correct_moves,total_moves);
     }
 
     function doubleFunction() {
@@ -501,6 +531,7 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
         console.log(playersHands)
         if (getHandValue(playersHands[temp]) <= 21 && temp == handIndex)
             standFunction(1);
+        updateAccuracy(correct_moves,total_moves);
     }
 
     function splitFunction() {
@@ -520,6 +551,7 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
         displayDouble();
         displaySplit();
         showCards();
+        updateAccuracy(correct_moves,total_moves);
     }
 
     function resetGame() {
