@@ -221,7 +221,7 @@ const Messages =  {
         bust : 'Bust!',
         userWin : 'Zmagali ste!',
         dealerWin : 'Delivec zmaga!',
-        tie : 'Izenačeno! Delivec zmaga!'
+        tie : 'Izenačeno!'
 }
 
 const Deal = {
