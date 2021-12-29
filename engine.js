@@ -36,6 +36,7 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
     sound.setAttribute("preload", "auto");
     sound.setAttribute("controls", "none");
     sound.style.display = "none";
+    sound.volume = 0.10
     document.body.appendChild(sound);
 
     let images = preloadImg(getPodatkiCards());
@@ -118,7 +119,7 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
     function checkHB(){
         if(trueCount < trueCountThreshold){
             sound.play()
-            errorMsg = "Wrong, you should have betted low";
+            errorMsg = "Wrong, you should have bet low";
             writeMessageIntoLog(errorMsg);
         }
         else {
@@ -133,7 +134,7 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
 
     function checkLB(){
         if(trueCount >= trueCountThreshold){
-            errorMsg = "Wrong, you should have betted high";
+            errorMsg = "Wrong, you should have bet high";
             sound.play()
             writeMessageIntoLog(errorMsg);
         }
