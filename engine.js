@@ -1,4 +1,4 @@
-import { PlayAnswer, PlayPhrases, SplitAnswer, SplitPhrase } from "./basicStrategy.js";
+﻿import { PlayAnswer, PlayPhrases, SplitAnswer, SplitPhrase } from "./basicStrategy.js";
 import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from "./podatki.js"
 
     let cards = getPodatkiCards();
@@ -30,6 +30,13 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
     let errorMsg = "";
 
     let move_hand=0;
+    //sound
+    let sound = document.createElement("audio");
+    sound.src = "wrong.mp3";
+    sound.setAttribute("preload", "auto");
+    sound.setAttribute("controls", "none");
+    sound.style.display = "none";
+    document.body.appendChild(sound);
 
     let images = preloadImg(getPodatkiCards());
     initGame()
@@ -110,6 +117,7 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
 
     function checkHB(){
         if(trueCount < trueCountThreshold){
+            sound.play()
             errorMsg = "Wrong, you should have betted low";
             writeMessageIntoLog(errorMsg);
         }
@@ -126,6 +134,7 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
     function checkLB(){
         if(trueCount >= trueCountThreshold){
             errorMsg = "Wrong, you should have betted high";
+            sound.play()
             writeMessageIntoLog(errorMsg);
         }
         else{
@@ -465,6 +474,7 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
                 //console.log("Mogu bi split "+SplitPhrase(playersHands[handIndex]))
                 //alert(SplitPhrase(playersHands[handIndex]))
                 errorMsg = SplitPhrase(playersHands[handIndex]);
+                sound.play()
                 writeMessageIntoLog(errorMsg);
             }
 
@@ -473,6 +483,7 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
                 //alert(PlayPhrases(playersHands[handIndex]))
                 //DOBIMO STRING al je string
                 errorMsg = PlayPhrases(playersHands[handIndex]);
+                sound.play()
                 writeMessageIntoLog(errorMsg);
             }
 
@@ -480,6 +491,7 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
                // console.log("Ne bi smel split: "+SplitPhrase(playersHands[handIndex]))
                 //alert(SplitPhrase(playersHands[handIndex]))
                 errorMsg = SplitPhrase(playersHands[handIndex]);
+                sound.play()
                 writeMessageIntoLog(errorMsg);
                 return
             }
@@ -505,6 +517,7 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
                 //console.log("2: "+PlayPhrases(playersHands[handIndex]))
                 //alert(PlayPhrases(playersHands[handIndex]))
                 errorMsg = PlayPhrases(playersHands[handIndex]);
+                sound.play()
                 writeMessageIntoLog(errorMsg);
             }
 
@@ -518,6 +531,7 @@ import { getPodatkiCards, getPodatkiDeal, getPodatkiMsg, getPodatkiStates } from
                 //console.log("3: "+PlayPhrases(playersHands[handIndex]))
                 //alert(PlayPhrases(playersHands[handIndex]))
                 errorMsg = PlayPhrases(playersHands[handIndex]);
+                sound.play()
                 writeMessageIntoLog(errorMsg);
             }
         }
@@ -783,9 +797,4 @@ export function add(acc, a){ //pomozna za vsoto array
         document.getElementById("settingsBut").style.visibility = "hidden";
     }
 
-    document.addEventListener('keydown', (e) => { // za lažje in hitrejše testiranje splita, na koncu gre to ven
-        if (e.key == 'e')
-            startGame();
-        if (e.key == 'r')
-            resetGame();
-    });
+ 
