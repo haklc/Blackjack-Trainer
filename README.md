@@ -5,6 +5,6 @@ Aplikacija za učenje igranja blackjacka, ki smo jo naredili pri predmet Tehnolo
 
 
 ### Demo aplikacije
-![Alt text](appPreview.png?raw=true)
+![Alt text](appPreview.gih)
 
 
